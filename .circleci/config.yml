@@ -6,6 +6,10 @@ jobs:
     docker:
       - image: cimg/node:lts
       - image: cimg/postgres:14.6
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: skill-tests
     working_directory: /mnt/ramdisk
     steps:
       - add_ssh_keys:
@@ -14,6 +18,21 @@ jobs:
       - checkout
       - spruce/check_and_skip_if_npm_publish
       - spruce/install_rsync
+      - run:
+          name: install dockerize
+          command: wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && sudo tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
+          environment:
+            DOCKERIZE_VERSION: v0.6.1
+      - run:
+          name: Wait for db
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: Restore DB
+          command: |
+            sudo apt install postgresql-client
+            psql < src/__tests__/support/test_database.sql
+          environment:
+            DATABASE_URL: "postgres://postgres@password:5432/skill-tests"
       - spruce/install_deps_build_ci_test
       - spruce/exit_if_not_auto_upgrade
       - spruce/merge_auto_upgrade
