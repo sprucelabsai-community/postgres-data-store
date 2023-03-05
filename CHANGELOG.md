@@ -1,3 +1,10 @@
+# [2.0.0](https://github.com/sprucelabsai/postgres-data-store/compare/v1.0.0...v2.0.0) (2023-03-05)
+
+
+### Breaking Changes
+
+* **auto-upgrade:** upgraded packages [upgrade-all] ([ce224bc](https://github.com/sprucelabsai/postgres-data-store/commit/ce224bc))
+
 # [1.0.0](https://github.com/sprucelabsai/postgres-data-store/compare/v0.1.3...v1.0.0) (2023-03-05)
 
 
