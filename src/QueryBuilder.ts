@@ -16,7 +16,7 @@ export default class QueryBuilder {
 		const { includeFields, limit, skip, sort } = options ?? {}
 		const fields = this.buildColumnListFromIncludeFields(includeFields)
 
-		let sql = `SELECT ${fields} FROM ${tableName}`
+		let sql = `SELECT ${fields} FROM public.${tableName}`
 
 		const { values, sql: where } = this.optionallyBuildWhere(query)
 		sql += where
@@ -174,7 +174,7 @@ export default class QueryBuilder {
 		const { fields, placeholders, values } =
 			this.splitRecordsIntoFieldsPlaceholdersAndValues(records)
 
-		const sql = `INSERT INTO ${tableName} (${fields.join(
+		const sql = `INSERT INTO public.${tableName} (${fields.join(
 			', '
 		)}) VALUES ${placeholders.join(', ')}`
 
@@ -272,7 +272,7 @@ export default class QueryBuilder {
 			startingCount: 0,
 		})
 
-		let sql = `UPDATE ${tableName} SET ${set.join(', ')}`
+		let sql = `UPDATE public.${tableName} SET ${set.join(', ')}`
 
 		const { sql: where, values: whereValues } = this.optionallyBuildWhere(
 			query,
@@ -290,7 +290,7 @@ export default class QueryBuilder {
 	}
 
 	public delete(tableName: string, query?: Query) {
-		let sql = `DELETE FROM ${tableName}`
+		let sql = `DELETE FROM public.${tableName}`
 
 		const { values, sql: where } = this.optionallyBuildWhere(query ?? {})
 		sql += where

@@ -84,7 +84,7 @@ export default class PostgresDatabase implements Database {
 		action: string
 	) {
 		const { sql, values } = this.query.update(collection, query, updates)
-		const results = await this.executeQuery(action, sql, values)
+		const results = await this.executeQuery(action, sql, values, collection)
 
 		if (results.rowCount === 0) {
 			throw new DataStoresError({
@@ -228,7 +228,7 @@ export default class PostgresDatabase implements Database {
 		await Promise.all(
 			tableNames.map((tableName) =>
 				this.client.query(
-					`TRUNCATE TABLE ${tableName} RESTART IDENTITY CASCADE`
+					`TRUNCATE TABLE public.${tableName} RESTART IDENTITY CASCADE`
 				)
 			)
 		)
@@ -251,12 +251,17 @@ export default class PostgresDatabase implements Database {
 		}
 
 		const { sql, values } = this.query.create(collection, records)
-		const { rows } = await this.executeQuery('create', sql, values)
+		const { rows } = await this.executeQuery('create', sql, values, collection)
 
 		return rows
 	}
 
-	private async executeQuery(action: string, sql: string, values: unknown[]) {
+	private async executeQuery(
+		action: string,
+		sql: string,
+		values: unknown[],
+		tableName: string
+	) {
 		try {
 			const results = await this.client.query({
 				text: sql,
@@ -273,7 +278,7 @@ export default class PostgresDatabase implements Database {
 					code: 'DUPLICATE_RECORD',
 					duplicateFields: fields,
 					duplicateValues: values,
-					collectionName: 'test_collection',
+					collectionName: tableName,
 					action,
 				})
 			}
@@ -361,7 +366,7 @@ export default class PostgresDatabase implements Database {
 			throw new DataStoresError({
 				code: 'INDEX_NOT_FOUND',
 				missingIndex: fields,
-				collectionName: 'test_collection',
+				collectionName,
 			})
 		}
 	}
@@ -445,7 +450,7 @@ export default class PostgresDatabase implements Database {
 
 		const query = `CREATE ${
 			isUnique ? `UNIQUE` : ''
-		} INDEX ${indexName} ON ${collection} (${keys})`
+		} INDEX ${indexName} ON public.${collection} (${keys})`
 
 		try {
 			await this.client.query({
@@ -455,7 +460,7 @@ export default class PostgresDatabase implements Database {
 			if (err.message?.includes?.('already exists')) {
 				throw new DataStoresError({
 					code: 'INDEX_EXISTS',
-					collectionName: 'test_collection',
+					collectionName: collection,
 					index: ['uniqueField'],
 				})
 			}

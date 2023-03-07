@@ -21,6 +21,12 @@ export default class PostgresDatabaseTest extends AbstractSpruceTest {
 	protected static async runsSuiteOfDatabaseTests() {
 		await databaseAssertUtil.runSuite(postgresConnect)
 	}
+
+	@test()
+	protected static async runsSuiteOfDatabaseTestsWithTableNameUser() {
+		databaseAssertUtil.collectionName = 'user'
+		await databaseAssertUtil.runSuite(postgresConnect)
+	}
 }
 
 const postgresConnect: TestConnect = async (connectionString?: string) => {
