@@ -145,11 +145,15 @@ export default class PostgresDatabase implements Database {
 
 	public async dropDatabase(): Promise<void> {
 		await this.truncateTables()
-
 		const names = await this.getTables()
 
 		for (const name of names) {
-			await this.dropAllNonPrimaryKeyIndexes(name)
+			try {
+				await this.dropAllNonPrimaryKeyIndexes(name)
+			} catch (err: any) {
+				console.error('Failed to drop indexe1')
+				console.error(err.stack ?? err.message)
+			}
 		}
 	}
 
