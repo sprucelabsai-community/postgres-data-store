@@ -148,12 +148,7 @@ export default class PostgresDatabase implements Database {
 		const names = await this.getTables()
 
 		for (const name of names) {
-			try {
-				await this.dropAllNonPrimaryKeyIndexes(name)
-			} catch (err: any) {
-				console.error('Failed to drop indexe1')
-				console.error(err.stack ?? err.message)
-			}
+			await this.dropAllNonPrimaryKeyIndexes(name)
 		}
 	}
 
@@ -161,7 +156,11 @@ export default class PostgresDatabase implements Database {
 		const indexNames = await this.getIndexNames(name)
 
 		for (const indexName of indexNames) {
-			await this.client.query(`DROP INDEX ${indexName}`)
+			try {
+				await this.client.query(`DROP INDEX ${indexName}`)
+			} catch (err: any) {
+				console.info('Failed to drop index', indexName, err.stack)
+			}
 		}
 	}
 
