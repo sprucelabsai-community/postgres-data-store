@@ -1,3 +1,10 @@
+# [2.1.0](https://github.com/sprucelabsai/postgres-data-store/compare/v2.0.8...v2.1.0) (2023-03-08)
+
+
+### Features
+
+* can run raw query! ([6ce8379](https://github.com/sprucelabsai/postgres-data-store/commit/6ce8379))
+
 ## [2.0.8](https://github.com/sprucelabsai/postgres-data-store/compare/v2.0.7...v2.0.8) (2023-03-08)
 
 ## [2.0.7](https://github.com/sprucelabsai/postgres-data-store/compare/v2.0.6...v2.0.7) (2023-03-07)
