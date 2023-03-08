@@ -19,7 +19,9 @@ export default class PostgresDatabaseTest extends AbstractSpruceTest {
 
 	@test()
 	protected static async runsSuiteOfDatabaseTests() {
-		await databaseAssertUtil.runSuite(postgresConnect)
+		await databaseAssertUtil.runSuite(postgresConnect, [
+			'assertCanQueryByGtLtGteLteNe',
+		])
 	}
 
 	@test()

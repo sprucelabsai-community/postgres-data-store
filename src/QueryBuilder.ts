@@ -93,9 +93,12 @@ export default class QueryBuilder {
 			} else if (value?.$gt) {
 				values.push(this.normalizeValue(value.$gt))
 				set.push(`${k} > $${++placeholderCount}`)
-			} else if (value?.$ne) {
-				values.push(this.normalizeValue(value.$ne))
-				set.push(`${k} != $${++placeholderCount}`)
+			} else if (typeof value?.$ne !== 'undefined') {
+				const v = value.$ne
+				v !== null && values.push(this.normalizeValue(v))
+				set.push(
+					`${k} ${v === null ? 'IS NOT NULL' : `!= $${++placeholderCount}`}`
+				)
 			} else if (k === '$or') {
 				const { set: orWheres, values: orValues } = this.buildSetClausFor$Or(
 					value,
