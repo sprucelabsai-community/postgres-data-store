@@ -6,19 +6,19 @@ import {
 	UniqueIndex,
 } from '@sprucelabs/data-stores'
 import { assertOptions } from '@sprucelabs/schema'
-import { Client } from 'pg'
+import { Client, QueryResult } from 'pg'
 import QueryBuilder from './QueryBuilder'
 
 export default class PostgresDatabase implements Database {
 	private connectionString: string
-	private client!: Client
+	protected client!: Client
 	private idCount = 1
-	private query: QueryBuilder
+	private queries: QueryBuilder
 
 	public constructor(connectionString: string) {
 		assertOptions({ connectionString }, ['connectionString'])
 		this.connectionString = connectionString
-		this.query = QueryBuilder.Builder()
+		this.queries = QueryBuilder.Builder()
 	}
 
 	public dropCollection(_name: string): Promise<void> {
@@ -34,7 +34,12 @@ export default class PostgresDatabase implements Database {
 		query: Record<string, any>,
 		updates: Record<string, any>
 	): Promise<number> {
-		const { sql, values } = this.query.update(collection, query, updates, false)
+		const { sql, values } = this.queries.update(
+			collection,
+			query,
+			updates,
+			false
+		)
 
 		const results = await this.client.query({
 			text: sql,
@@ -48,7 +53,7 @@ export default class PostgresDatabase implements Database {
 		collection: string,
 		query?: Record<string, any> | undefined
 	): Promise<number> {
-		const { sql, values } = this.query.find(collection, query ?? {}, {
+		const { sql, values } = this.queries.find(collection, query ?? {}, {
 			includeFields: ['count(*) as count'],
 		})
 
@@ -83,7 +88,7 @@ export default class PostgresDatabase implements Database {
 		updates: Record<string, any>,
 		action: string
 	) {
-		const { sql, values } = this.query.update(collection, query, updates)
+		const { sql, values } = this.queries.update(collection, query, updates)
 		const results = await this.executeQuery(action, sql, values, collection)
 
 		if (results.rowCount === 0) {
@@ -103,7 +108,7 @@ export default class PostgresDatabase implements Database {
 		query?: Record<string, any> | undefined,
 		options?: QueryOptions | undefined
 	): Promise<Record<string, any>[]> {
-		const { sql, values } = this.query.find(collection, query ?? {}, options)
+		const { sql, values } = this.queries.find(collection, query ?? {}, options)
 
 		const results = await this.client.query({
 			text: sql,
@@ -135,7 +140,7 @@ export default class PostgresDatabase implements Database {
 		collection: string,
 		query: Record<string, any>
 	): Promise<number> {
-		const { sql, values } = this.query.delete(collection, query)
+		const { sql, values } = this.queries.delete(collection, query)
 		const results = await this.client.query({
 			text: sql,
 			values,
@@ -208,7 +213,7 @@ export default class PostgresDatabase implements Database {
 			query = { id: match?.id }
 		}
 
-		let { sql, values } = this.query.delete(collection, query)
+		let { sql, values } = this.queries.delete(collection, query)
 
 		const results = await this.client.query({
 			text: sql,
@@ -253,7 +258,7 @@ export default class PostgresDatabase implements Database {
 			return []
 		}
 
-		const { sql, values } = this.query.create(collection, records)
+		const { sql, values } = this.queries.create(collection, records)
 		const { rows } = await this.executeQuery('create', sql, values, collection)
 
 		return rows
@@ -524,5 +529,11 @@ export default class PostgresDatabase implements Database {
 		const result = { fields: fixedFields, values }
 
 		return result
+	}
+
+	public async query<T = QueryResult>(query: string): Promise<T> {
+		return (await this.client.query({
+			text: query,
+		})) as T
 	}
 }
