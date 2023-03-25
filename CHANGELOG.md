@@ -1,3 +1,31 @@
+## [2.1.22](https://github.com/sprucelabsai-community/postgres-data-store/compare/v2.1.21...v2.1.22) (2023-03-24)
+
+## [2.1.21](https://github.com/sprucelabsai-community/postgres-data-store/compare/v2.1.20...v2.1.21) (2023-03-23)
+
+## [2.1.20](https://github.com/sprucelabsai-community/postgres-data-store/compare/v2.1.19...v2.1.20) (2023-03-23)
+
+## [2.1.19](https://github.com/sprucelabsai-community/postgres-data-store/compare/v2.1.18...v2.1.19) (2023-03-21)
+
+## [2.1.18](https://github.com/sprucelabsai-community/postgres-data-store/compare/v2.1.17...v2.1.18) (2023-03-21)
+
+## [2.1.17](https://github.com/sprucelabsai/postgres-data-store/compare/v2.1.16...v2.1.17) (2023-03-20)
+
+## [2.1.16](https://github.com/sprucelabsai/postgres-data-store/compare/v2.1.15...v2.1.16) (2023-03-16)
+
+## [2.1.15](https://github.com/sprucelabsai/postgres-data-store/compare/v2.1.14...v2.1.15) (2023-03-16)
+
+## [2.1.14](https://github.com/sprucelabsai/postgres-data-store/compare/v2.1.13...v2.1.14) (2023-03-15)
+
+## [2.1.13](https://github.com/sprucelabsai/postgres-data-store/compare/v2.1.12...v2.1.13) (2023-03-15)
+
+## [2.1.12](https://github.com/sprucelabsai/postgres-data-store/compare/v2.1.11...v2.1.12) (2023-03-15)
+
+## [2.1.11](https://github.com/sprucelabsai/postgres-data-store/compare/v2.1.10...v2.1.11) (2023-03-15)
+
+## [2.1.10](https://github.com/sprucelabsai/postgres-data-store/compare/v2.1.9...v2.1.10) (2023-03-14)
+
+## [2.1.9](https://github.com/sprucelabsai/postgres-data-store/compare/v2.1.8...v2.1.9) (2023-03-13)
+
 ## [2.1.8](https://github.com/sprucelabsai/postgres-data-store/compare/v2.1.7...v2.1.8) (2023-03-13)
 
 ## [2.1.7](https://github.com/sprucelabsai/postgres-data-store/compare/v2.1.6...v2.1.7) (2023-03-13)
