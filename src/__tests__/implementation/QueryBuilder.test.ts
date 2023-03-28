@@ -25,10 +25,10 @@ export default class QueryBuilderTest extends AbstractSpruceTest {
 
 	@test()
 	protected static async findQueryHonorsFields() {
-		this.assertFindSqlEquals(`SELECT id, name FROM "users"`, {
+		this.assertFindSqlEquals(`SELECT "id", "name" FROM "users"`, {
 			includeFields: ['id', 'name'],
 		})
-		this.assertFindSqlEquals(`SELECT firstName, lastName FROM "users"`, {
+		this.assertFindSqlEquals(`SELECT "firstName", "lastName" FROM "users"`, {
 			includeFields: ['firstName', 'lastName'],
 		})
 	}
@@ -62,7 +62,7 @@ export default class QueryBuilderTest extends AbstractSpruceTest {
 		direction: 'asc' | 'desc'
 	) {
 		this.assertFindSqlEquals(
-			`SELECT * FROM "users" ORDER BY ${field} ${direction.toUpperCase()}`,
+			`SELECT * FROM "users" ORDER BY "${field}" ${direction.toUpperCase()}`,
 			{
 				sort: [{ direction, field }],
 			}
@@ -72,7 +72,7 @@ export default class QueryBuilderTest extends AbstractSpruceTest {
 	@test()
 	protected static async findHandlesMultipleSorts() {
 		this.assertFindSqlEquals(
-			`SELECT * FROM "users" ORDER BY firstName ASC, lastName DESC`,
+			`SELECT * FROM "users" ORDER BY "firstName" ASC, "lastName" DESC`,
 			{
 				sort: [
 					{ direction: 'asc', field: 'firstName' },
@@ -86,19 +86,19 @@ export default class QueryBuilderTest extends AbstractSpruceTest {
 	protected static async canBuildSimpleWhere() {
 		this.assertFindWithQueryEquals({
 			query: { firstName: 'Joe' },
-			where: 'firstName = $1',
+			where: '"firstName" = $1',
 			expectedValues: ['Joe'],
 		})
 
 		this.assertFindWithQueryEquals({
 			query: { lastName: 'Joe' },
-			where: 'lastName = $1',
+			where: '"lastName" = $1',
 			expectedValues: ['Joe'],
 		})
 
 		this.assertFindWithQueryEquals({
 			query: { lastName: 'Doe', firstName: 'Joe' },
-			where: 'lastName = $1 AND firstName = $2',
+			where: '"lastName" = $1 AND "firstName" = $2',
 			expectedValues: ['Doe', 'Joe'],
 		})
 	}
@@ -107,7 +107,7 @@ export default class QueryBuilderTest extends AbstractSpruceTest {
 	protected static async canBuildMoreComplexWhere() {
 		this.assertFindWithQueryEquals({
 			query: { $or: [{ firstName: 'test' }, { lastName: 'cheeze' }] },
-			where: '(firstName = $1 OR lastName = $2)',
+			where: '("firstName" = $1 OR "lastName" = $2)',
 			expectedValues: ['test', 'cheeze'],
 		})
 	}
@@ -115,7 +115,7 @@ export default class QueryBuilderTest extends AbstractSpruceTest {
 	@test()
 	protected static canHandleWhereAndOrderWithFind() {
 		this.assertFindEquals({
-			expectedSql: `SELECT * FROM "users" WHERE firstName = $1 ORDER BY firstName ASC`,
+			expectedSql: `SELECT * FROM "users" WHERE "firstName" = $1 ORDER BY "firstName" ASC`,
 			expectedValues: ['Joe'],
 			query: {
 				firstName: 'Joe',
@@ -134,7 +134,7 @@ export default class QueryBuilderTest extends AbstractSpruceTest {
 				firstName: 'test',
 			},
 			expected: {
-				sql: `UPDATE "${this.tableName}" SET firstName = $1 RETURNING *`,
+				sql: `UPDATE "${this.tableName}" SET "firstName" = $1 RETURNING *`,
 				values: ['test'],
 			},
 		})
@@ -150,7 +150,7 @@ export default class QueryBuilderTest extends AbstractSpruceTest {
 				firstName: 'test',
 			},
 			expected: {
-				sql: `UPDATE "users" SET firstName = $1 WHERE id = $2 RETURNING *`,
+				sql: `UPDATE "users" SET "firstName" = $1 WHERE "id" = $2 RETURNING *`,
 				values: ['test', '123'],
 			},
 		})
@@ -164,7 +164,7 @@ export default class QueryBuilderTest extends AbstractSpruceTest {
 				lastName: 'cheeze',
 			},
 			expected: {
-				sql: `UPDATE "users" SET firstName = $1, lastName = $2 RETURNING *`,
+				sql: `UPDATE "users" SET "firstName" = $1, "lastName" = $2 RETURNING *`,
 				values: ['test', 'cheeze'],
 			},
 		})
@@ -181,7 +181,7 @@ export default class QueryBuilderTest extends AbstractSpruceTest {
 				lastName: 'cheeze',
 			},
 			expected: {
-				sql: `UPDATE "users" SET firstName = $1, lastName = $2 WHERE id = $3 RETURNING *`,
+				sql: `UPDATE "users" SET "firstName" = $1, "lastName" = $2 WHERE "id" = $3 RETURNING *`,
 				values: ['test', 'cheeze', '123'],
 			},
 		})
@@ -197,7 +197,7 @@ export default class QueryBuilderTest extends AbstractSpruceTest {
 				$push: { names: 'hey' },
 			},
 			expected: {
-				sql: `UPDATE "users" SET names = JSONB_SET(COALESCE(names || $1::JSONB, '[]'::JSONB), '{-1}', $1::JSONB) WHERE id = $2 RETURNING *`,
+				sql: `UPDATE "users" SET "names" = JSONB_SET(COALESCE(names || $1::JSONB, '[]'::JSONB), '{-1}', $1::JSONB) WHERE "id" = $2 RETURNING *`,
 				values: [JSON.stringify('hey'), '123'],
 			},
 		})
@@ -210,7 +210,7 @@ export default class QueryBuilderTest extends AbstractSpruceTest {
 				$push: { names: 'what', things: 'hey' },
 			},
 			expected: {
-				sql: `UPDATE "users" SET names = JSONB_SET(COALESCE(names || $1::JSONB, '[]'::JSONB), '{-1}', $1::JSONB), things = JSONB_SET(COALESCE(names || $2::JSONB, '[]'::JSONB), '{-1}', $2::JSONB) RETURNING *`,
+				sql: `UPDATE "users" SET "names" = JSONB_SET(COALESCE(names || $1::JSONB, '[]'::JSONB), '{-1}', $1::JSONB), "things" = JSONB_SET(COALESCE(names || $2::JSONB, '[]'::JSONB), '{-1}', $2::JSONB) RETURNING *`,
 				values: [JSON.stringify('what'), JSON.stringify('hey')],
 			},
 		})
@@ -224,7 +224,7 @@ export default class QueryBuilderTest extends AbstractSpruceTest {
 		this.tableName = generateId()
 		const value = generateId()
 		this.assertCreateSqlEquals([{ [fieldName]: value }], {
-			sql: `INSERT INTO "${this.tableName}" (${fieldName}) VALUES ($1) RETURNING *`,
+			sql: `INSERT INTO "${this.tableName}" ("${fieldName}") VALUES ($1) RETURNING *`,
 			values: [value],
 		})
 	}
@@ -232,7 +232,7 @@ export default class QueryBuilderTest extends AbstractSpruceTest {
 	@test()
 	protected static canCreateWithMultipleFieldsInSingleRecord() {
 		this.assertCreateSqlEquals([{ firstName: 'Joe', lastName: 'Smith' }], {
-			sql: `INSERT INTO "users" (firstName, lastName) VALUES ($1, $2) RETURNING *`,
+			sql: `INSERT INTO "users" ("firstName", "lastName") VALUES ($1, $2) RETURNING *`,
 			values: ['Joe', 'Smith'],
 		})
 	}
@@ -240,7 +240,7 @@ export default class QueryBuilderTest extends AbstractSpruceTest {
 	@test()
 	protected static async canCreateTwoSingleFieldRecords() {
 		this.assertCreateSqlEquals([{ firstName: 'Joe' }, { firstName: 'Jane' }], {
-			sql: `INSERT INTO "users" (firstName) VALUES ($1), ($2) RETURNING *`,
+			sql: `INSERT INTO "users" ("firstName") VALUES ($1), ($2) RETURNING *`,
 			values: ['Joe', 'Jane'],
 		})
 	}
@@ -250,7 +250,7 @@ export default class QueryBuilderTest extends AbstractSpruceTest {
 		this.assertCreateSqlEquals(
 			[{ firstName: 'Joe' }, { firstName: 'Jane', lastName: 'Smith' }],
 			{
-				sql: `INSERT INTO "users" (firstName, lastName) VALUES ($1, $2), ($3, $4) RETURNING *`,
+				sql: `INSERT INTO "users" ("firstName", "lastName") VALUES ($1, $2), ($3, $4) RETURNING *`,
 				values: ['Joe', null, 'Jane', 'Smith'],
 			}
 		)
@@ -259,7 +259,7 @@ export default class QueryBuilderTest extends AbstractSpruceTest {
 	@test()
 	protected static async canInsertRecordWithArrayField() {
 		this.assertCreateSqlEquals([{ firstName: 'Joe', names: ['a', 'b'] }], {
-			sql: `INSERT INTO "users" (firstName, names) VALUES ($1, $2::json) RETURNING *`,
+			sql: `INSERT INTO "users" ("firstName", "names") VALUES ($1, $2::json) RETURNING *`,
 			values: ['Joe', '["a","b"]'],
 		})
 	}
@@ -268,7 +268,7 @@ export default class QueryBuilderTest extends AbstractSpruceTest {
 	protected static async canDeleteSingleRecord() {
 		this.assertDeleteSqlEquals({
 			expected: {
-				sql: `DELETE FROM "users" WHERE id = $1`,
+				sql: `DELETE FROM "users" WHERE "id" = $1`,
 				values: ['123'],
 			},
 			query: {
@@ -280,7 +280,7 @@ export default class QueryBuilderTest extends AbstractSpruceTest {
 
 		this.assertDeleteSqlEquals({
 			expected: {
-				sql: `DELETE FROM "test" WHERE name = $1 AND dink = $2`,
+				sql: `DELETE FROM "test" WHERE "name" = $1 AND "dink" = $2`,
 				values: ['whatever', 'donk'],
 			},
 			query: {
@@ -302,7 +302,7 @@ export default class QueryBuilderTest extends AbstractSpruceTest {
 				id: '1234',
 			},
 			expected: {
-				sql: `INSERT INTO "users" (name, id) VALUES ($1, $2) ON CONFLICT (id) WHERE id = $3 DO UPDATE SET name = EXCLUDED.name RETURNING *`,
+				sql: `INSERT INTO "users" ("name", "id") VALUES ($1, $2) ON CONFLICT ("id") WHERE "id" = $3 DO UPDATE SET "name" = EXCLUDED.name RETURNING *`,
 				values: ['taco', '1234', '1234'],
 			},
 		})
@@ -319,7 +319,7 @@ export default class QueryBuilderTest extends AbstractSpruceTest {
 				boat: 'go',
 			},
 			expected: {
-				sql: `INSERT INTO oy (hello, taco, name, boat) VALUES ($1, $2, $3, $4) ON CONFLICT (name, boat) WHERE name = $5 AND boat = $6 DO UPDATE SET hello = EXCLUDED.hello, taco = EXCLUDED.taco RETURNING *`,
+				sql: `INSERT INTO oy ("hello", "taco", "name", "boat") VALUES ($1, $2, $3, $4) ON CONFLICT (name, boat) WHERE name = $5 AND boat = $6 DO UPDATE SET hello = EXCLUDED.hello, taco = EXCLUDED.taco RETURNING *`,
 				values: ['world', 'tuesday', 'hey', 'go', 'hey', 'go'],
 			},
 		})

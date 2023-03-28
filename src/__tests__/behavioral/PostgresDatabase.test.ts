@@ -64,11 +64,15 @@ export default class PostgresDatabaseTest extends AbstractSpruceTest {
 	protected static async retunsResultsFromRawQuery() {
 		const db = await this.connect()
 
+		//TODO need a truncate or something else here
+		await db.dropDatabase()
+
 		const created = await db.createOne('user', {
 			name: 'test',
 		})
 
 		const results = await db.query('SELECT * FROM public.user')
+
 		assert.isEqualDeep(results.rows, [created])
 	}
 

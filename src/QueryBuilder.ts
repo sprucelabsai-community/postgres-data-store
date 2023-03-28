@@ -78,30 +78,30 @@ export default class QueryBuilder {
 			if (value?.$in) {
 				values.push(...value.$in.map((v: unknown) => this.normalizeValue(v)))
 				set.push(
-					`${k} IN (${value.$in
+					`"${k}" IN (${value.$in
 						.map(() => `$${++placeholderCount}`)
 						.join(', ')})`
 				)
 			} else if (value?.$regex) {
 				values.push(this.normalizeValue(value.$regex))
-				set.push(`${k} ~* $${++placeholderCount}`)
+				set.push(`"${k}" ~* $${++placeholderCount}`)
 			} else if (value?.$lte) {
 				values.push(this.normalizeValue(value.$lte))
-				set.push(`${k} <= $${++placeholderCount}`)
+				set.push(`"${k}" <= $${++placeholderCount}`)
 			} else if (value?.$lt) {
 				values.push(this.normalizeValue(value.$lt))
-				set.push(`${k} < $${++placeholderCount}`)
+				set.push(`"${k}" < $${++placeholderCount}`)
 			} else if (value?.$gte) {
 				values.push(this.normalizeValue(value.$gte))
-				set.push(`${k} >= $${++placeholderCount}`)
+				set.push(`"${k}" >= $${++placeholderCount}`)
 			} else if (value?.$gt) {
 				values.push(this.normalizeValue(value.$gt))
-				set.push(`${k} > $${++placeholderCount}`)
+				set.push(`"${k}" > $${++placeholderCount}`)
 			} else if (typeof value?.$ne !== 'undefined') {
 				const v = value.$ne
 				v !== null && values.push(this.normalizeValue(v))
 				set.push(
-					`${k} ${v === null ? 'IS NOT NULL' : `!= $${++placeholderCount}`}`
+					`"${k}" ${v === null ? 'IS NOT NULL' : `!= $${++placeholderCount}`}`
 				)
 			} else if (k === '$or') {
 				const { set: orWheres, values: orValues } = this.buildSetClausFor$Or(
@@ -120,7 +120,7 @@ export default class QueryBuilder {
 				values.push(...sub.values.map((v) => JSON.stringify(v)))
 				set.push(...sub.set)
 			} else if (value === null || value === undefined) {
-				set.push(`${k} IS NULL`)
+				set.push(`"${k}" IS NULL`)
 			} else {
 				placeholderCount++
 
@@ -137,12 +137,12 @@ export default class QueryBuilder {
 						value = `${value}`
 					} else {
 						k = field
-						placeholder = `${k} || jsonb_build_object('${prop}', ${placeholder}::text)`
+						placeholder = `"${k}" || jsonb_build_object('${prop}', ${placeholder}::text)`
 					}
 				}
 
 				values.push(this.normalizeValue(value))
-				set.push(`${k} = ${placeholder}`)
+				set.push(`${quote(k)} = ${placeholder}`)
 			}
 		})
 
@@ -181,9 +181,9 @@ export default class QueryBuilder {
 		const { fields, placeholders, values } =
 			this.splitRecordsIntoFieldsPlaceholdersAndValues(records)
 
-		const sql = `INSERT INTO ${this.buildTableName(tableName)} (${fields.join(
-			', '
-		)}) VALUES ${placeholders.join(', ')}`
+		const sql = `INSERT INTO ${this.buildTableName(tableName)} (${fields
+			.map((f) => `"${f}"`)
+			.join(', ')}) VALUES ${placeholders.join(', ')}`
 
 		return { sql, values }
 	}
@@ -234,13 +234,14 @@ export default class QueryBuilder {
 	private buildColumnListFromAllRecords(records: Record<string, any>[]) {
 		const fields = records.map((r) => Object.keys(r)).flat()
 		const uniqueFields = new Set(fields)
+
 		return Array.from(uniqueFields)
 	}
 
 	private optionallyBuildSort(sort: QuerySortField[] | undefined) {
 		if (sort) {
 			const sortSpecs = sort.map(
-				(s) => `${s.field} ${s.direction.toUpperCase()}`
+				(s) => `"${s.field}" ${s.direction.toUpperCase()}`
 			)
 			return ` ORDER BY ${sortSpecs.join(', ')}`
 		}
@@ -265,7 +266,7 @@ export default class QueryBuilder {
 	private buildColumnListFromIncludeFields(
 		includeFields: string[] | undefined
 	) {
-		return !includeFields ? '*' : includeFields.join(', ')
+		return !includeFields ? '*' : includeFields.map((f) => quote(f)).join(', ')
 	}
 
 	public update(
@@ -338,4 +339,8 @@ export default class QueryBuilder {
 export interface BuiltQuery {
 	sql: string
 	values: unknown[]
+}
+
+export function quote(f: string): string {
+	return f.includes(' ') ? f : `"${f}"`
 }

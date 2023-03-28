@@ -7,7 +7,7 @@ import {
 } from '@sprucelabs/data-stores'
 import { assertOptions } from '@sprucelabs/schema'
 import { Client, QueryResult } from 'pg'
-import QueryBuilder from './QueryBuilder'
+import QueryBuilder, { quote } from './QueryBuilder'
 
 export default class PostgresDatabase implements Database {
 	private connectionString: string
@@ -284,7 +284,7 @@ export default class PostgresDatabase implements Database {
 
 				throw new DataStoresError({
 					code: 'DUPLICATE_RECORD',
-					duplicateFields: fields,
+					duplicateFields: fields.map((f) => f.replace(/"/g, '')),
 					duplicateValues: values,
 					collectionName: tableName,
 					action,
@@ -484,7 +484,8 @@ export default class PostgresDatabase implements Database {
 			const parts = field.split('.')
 			return `(${parts[0]}->>'${parts[1]}')`
 		}
-		return field
+
+		return quote(field)
 	}
 
 	private generateIndexName(collection: string, fields: UniqueIndex) {

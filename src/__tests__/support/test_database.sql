@@ -28,25 +28,25 @@ CREATE TABLE public.test_collection (
     id integer NOT NULL,
     name character varying NOT NULL,
     count integer,
-    ispublic boolean,
+    "isPublic" boolean,
     number integer,
     names jsonb,
-    uniquefield character varying,
-    uniquefield2 character varying,
-    uniquefield3 character varying,
-    uniquefield4 character varying,
-    somefield character varying,
-    somefield2 character varying,
-    somefield3 character varying,
-    otherfield character varying,
-    otherfield2 character varying,
-    someotherfield character varying,
-    randomuniquefield character varying,
+    "uniqueField" character varying,
+    "uniqueField2" character varying,
+    "uniqueField3" character varying,
+    "uniqueField4" character varying,
+    "someField" character varying,
+    "someField2" character varying,
+    "someField3" character varying,
+    "otherField" character varying,
+    "otherField2" character varying,
+    "someOtherField" character varying,
+    "randomUniqueField" character varying,
     target jsonb,
     slug character varying,
-    anonindexedfield boolean,
-    undefinedfield character varying,
-    nullfield character varying
+    "aNonIndexedField" boolean,
+    "undefinedField" character varying,
+    "nullField" character varying
 );
 
 
@@ -65,8 +65,6 @@ CREATE SEQUENCE public.test_collection_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.test_collection_id_seq OWNER TO taylorromero;
-
 --
 -- Name: test_collection_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: taylorromero
 --
@@ -82,29 +80,27 @@ CREATE TABLE public."user" (
     id integer NOT NULL,
     name character varying NOT NULL,
     count integer,
-    ispublic boolean,
+    "isPublic" boolean,
     number integer,
     names jsonb,
-    uniquefield character varying,
-    uniquefield2 character varying,
-    uniquefield3 character varying,
-    uniquefield4 character varying,
-    somefield character varying,
-    somefield2 character varying,
-    somefield3 character varying,
-    otherfield character varying,
-    otherfield2 character varying,
-    someotherfield character varying,
-    randomuniquefield character varying,
+    "uniqueField" character varying,
+    "uniqueField2" character varying,
+    "uniqueField3" character varying,
+    "uniqueField4" character varying,
+    "someField" character varying,
+    "someField2" character varying,
+    "someField3" character varying,
+    "otherField" character varying,
+    "otherField2" character varying,
+    "someOtherField" character varying,
+    "randomUniqueField" character varying,
     target jsonb,
     slug character varying,
-    anonindexedfield boolean,
-    undefinedfield character varying,
-    nullfield character varying
+    "aNonIndexedField" boolean,
+    "undefinedField" character varying,
+    "nullField" character varying
 );
 
-
-ALTER TABLE public."user" OWNER TO taylorromero;
 
 --
 -- Name: user_id_seq; Type: SEQUENCE; Schema: public; Owner: taylorromero
@@ -119,7 +115,6 @@ CREATE SEQUENCE public.user_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.user_id_seq OWNER TO taylorromero;
 
 --
 -- Name: user_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: taylorromero
@@ -146,7 +141,7 @@ ALTER TABLE ONLY public."user" ALTER COLUMN id SET DEFAULT nextval('public.user_
 -- Data for Name: test_collection; Type: TABLE DATA; Schema: public; Owner: taylorromero
 --
 
-COPY public.test_collection (id, name, count, ispublic, number, names, uniquefield, uniquefield2, uniquefield3, uniquefield4, somefield, somefield2, somefield3, otherfield, otherfield2, someotherfield, randomuniquefield, target, slug, anonindexedfield, undefinedfield, nullfield) FROM stdin;
+COPY public.test_collection (id, name, count, "isPublic", number, names, "uniqueField", "uniqueField2", "uniqueField3", "uniqueField4", "someField", "someField2", "someField3", "otherField", "otherField2", "someOtherField", "randomUniqueField", target, slug, "aNonIndexedField", "undefinedField", "nullField") FROM stdin;
 \.
 
 
@@ -154,7 +149,7 @@ COPY public.test_collection (id, name, count, ispublic, number, names, uniquefie
 -- Data for Name: user; Type: TABLE DATA; Schema: public; Owner: taylorromero
 --
 
-COPY public."user" (id, name, count, ispublic, number, names, uniquefield, uniquefield2, uniquefield3, uniquefield4, somefield, somefield2, somefield3, otherfield, otherfield2, someotherfield, randomuniquefield, target, slug, anonindexedfield, undefinedfield, nullfield) FROM stdin;
+COPY public."user" (id, name, count, "isPublic", number, names, "uniqueField", "uniqueField2", "uniqueField3", "uniqueField4", "someField", "someField2", "someField3", "otherField", "otherField2", "someOtherField", "randomUniqueField", target, slug, "aNonIndexedField", "undefinedField", "nullField") FROM stdin;
 \.
 
 
