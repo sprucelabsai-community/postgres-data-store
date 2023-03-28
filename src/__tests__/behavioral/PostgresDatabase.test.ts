@@ -72,6 +72,12 @@ export default class PostgresDatabaseTest extends AbstractSpruceTest {
 		assert.isEqualDeep(results.rows, [created])
 	}
 
+	@test()
+	protected static async showsAsNotConnectedBeforeConnected() {
+		const db = new PostgresDatabase('postgres://localhost:5432/skill-tests')
+		assert.isFalse(db.isConnected())
+	}
+
 	private static async connect() {
 		const { db: dbr } = await postgresConnect()
 		const db = dbr as PostgresDatabase

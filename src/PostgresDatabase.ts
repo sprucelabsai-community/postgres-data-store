@@ -296,12 +296,12 @@ export default class PostgresDatabase implements Database {
 	}
 
 	public async connect(): Promise<void> {
-		const client = new Client({
+		this.client = new Client({
 			connectionString: this.connectionString,
 		})
 
 		try {
-			await client.connect()
+			await this.client.connect()
 		} catch (err: any) {
 			const message = err.message as string | undefined
 
@@ -325,8 +325,6 @@ export default class PostgresDatabase implements Database {
 				originalError: err,
 			})
 		}
-
-		this.client = client
 	}
 
 	public async getUniqueIndexes(
@@ -501,7 +499,7 @@ export default class PostgresDatabase implements Database {
 
 	public isConnected(): boolean {
 		//@ts-ignore
-		return this.client._connected && !this.client._ending
+		return this.client ? this.client._connected && !this.client._ending : false
 	}
 
 	private parseIndexViolatedForFieldsAndValues(input?: string) {
