@@ -236,7 +236,7 @@ export default class PostgresDatabase implements Database {
 		await Promise.all(
 			tableNames.map((tableName) =>
 				this.client.query(
-					`TRUNCATE TABLE public.${tableName} RESTART IDENTITY CASCADE`
+					`TRUNCATE TABLE "${tableName}" RESTART IDENTITY CASCADE`
 				)
 			)
 		)
@@ -456,7 +456,7 @@ export default class PostgresDatabase implements Database {
 
 		const query = `CREATE ${
 			isUnique ? `UNIQUE` : ''
-		} INDEX ${indexName} ON public.${collection} (${keys})`
+		} INDEX ${indexName} ON "${collection}" (${keys})`
 
 		try {
 			await this.client.query({
