@@ -1,3 +1,12 @@
+## [3.1.1](https://github.com/sprucelabsai-community/postgres-data-store/compare/v3.1.0...v3.1.1) (2023-03-30)
+
+# [3.1.0](https://github.com/sprucelabsai-community/postgres-data-store/compare/v3.0.8...v3.1.0) (2023-03-30)
+
+
+### Features
+
+* can set postgres id format ([79af2e0](https://github.com/sprucelabsai-community/postgres-data-store/commit/79af2e0))
+
 ## [3.0.8](https://github.com/sprucelabsai-community/postgres-data-store/compare/v3.0.7...v3.0.8) (2023-03-30)
 
 ## [3.0.7](https://github.com/sprucelabsai-community/postgres-data-store/compare/v3.0.6...v3.0.7) (2023-03-29)
