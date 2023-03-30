@@ -171,6 +171,19 @@ export default class QueryBuilderTest extends AbstractSpruceTest {
 	}
 
 	@test()
+	protected static async canUpdateWithNull() {
+		this.assertUpdateEquals({
+			updates: {
+				lastName: null,
+			},
+			expected: {
+				sql: `UPDATE "users" SET "lastName" = $1 RETURNING *`,
+				values: [null],
+			},
+		})
+	}
+
+	@test()
 	protected static async canUpdateWithMultipleFieldsAndWhere() {
 		this.assertUpdateEquals({
 			query: {
@@ -352,7 +365,7 @@ export default class QueryBuilderTest extends AbstractSpruceTest {
 	private static assertUpdateEquals(options: {
 		query?: Query
 		updates: Record<string, any>
-		expected: { sql: string; values: string[] }
+		expected: { sql: string; values: (string | null)[] }
 	}) {
 		const {
 			query,

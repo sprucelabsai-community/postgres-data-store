@@ -57,6 +57,7 @@ export default class QueryBuilder {
 		startingCount?: number
 		placeholderTemplate?: string
 		isBuildingWhere?: boolean
+		useIsNull?: boolean
 	}): {
 		set: string[]
 		values: any[]
@@ -66,6 +67,7 @@ export default class QueryBuilder {
 			startingCount = 0,
 			placeholderTemplate = '${{count}}',
 			isBuildingWhere = false,
+			useIsNull = true,
 		} = options
 
 		let placeholderCount = startingCount
@@ -75,6 +77,8 @@ export default class QueryBuilder {
 
 		queryKeys.forEach((k) => {
 			let value = query[k]
+			const isNull = value === null && useIsNull
+
 			if (value?.$in) {
 				values.push(...value.$in.map((v: unknown) => this.normalizeValue(v)))
 				set.push(
@@ -119,7 +123,7 @@ export default class QueryBuilder {
 
 				values.push(...sub.values.map((v) => JSON.stringify(v)))
 				set.push(...sub.set)
-			} else if (value === null || value === undefined) {
+			} else if (isNull || value === undefined) {
 				set.push(`"${k}" IS NULL`)
 			} else {
 				placeholderCount++
@@ -278,6 +282,7 @@ export default class QueryBuilder {
 		const { set: set, values } = this.buildSetClause({
 			query: updates,
 			startingCount: 0,
+			useIsNull: false,
 		})
 
 		let sql = `UPDATE ${this.buildTableName(tableName)} SET ${set.join(', ')}`
