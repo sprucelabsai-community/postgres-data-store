@@ -82,6 +82,20 @@ export default class PostgresDatabaseTest extends AbstractSpruceTest {
 		assert.isFalse(db.isConnected())
 	}
 
+	@test()
+	protected static async generatesIdAsUuidIfSet() {
+		const db = await this.connect()
+
+		assert.isEqual(db.generateId(), '1')
+		assert.isEqual(db.generateId(), '2')
+
+		process.env.POSTGRES_ID_FORMAT = 'uuid'
+
+		assert.isTrue(isUUIDv4(db.generateId()))
+		assert.isTrue(isUUIDv4(db.generateId()))
+		assert.isTrue(isUUIDv4(db.generateId()))
+	}
+
 	private static async connect() {
 		const { db: dbr } = await postgresConnect()
 		const db = dbr as PostgresDatabase
@@ -127,4 +141,10 @@ const postgresConnect: TestConnect = async (
 		connectionStringWithRandomBadDatabaseName: `postgres://postgres:password@localhost:5432/${badDatabaseName}`,
 		badDatabaseName,
 	}
+}
+
+function isUUIDv4(input: string): boolean {
+	const uuidv4Regex =
+		/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/
+	return uuidv4Regex.test(input)
 }

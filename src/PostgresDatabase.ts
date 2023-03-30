@@ -1,3 +1,4 @@
+import { randomUUID } from 'crypto'
 import {
 	Database,
 	DataStoresError,
@@ -26,7 +27,9 @@ export default class PostgresDatabase implements Database {
 	}
 
 	public generateId(): string {
-		return `${this.idCount++}`
+		return process.env.POSTGRES_ID_FORMAT === 'uuid'
+			? randomUUID()
+			: `${this.idCount++}`
 	}
 
 	public async update(
