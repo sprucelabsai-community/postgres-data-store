@@ -1,3 +1,5 @@
+## [3.1.12](https://github.com/sprucelabsai-community/postgres-data-store/compare/v3.1.11...v3.1.12) (2023-04-19)
+
 ## [3.1.11](https://github.com/sprucelabsai-community/postgres-data-store/compare/v3.1.10...v3.1.11) (2023-04-19)
 
 ## [3.1.10](https://github.com/sprucelabsai-community/postgres-data-store/compare/v3.1.9...v3.1.10) (2023-04-14)
