@@ -1,3 +1,10 @@
+# [4.0.0](https://github.com/sprucelabsai-community/postgres-data-store/compare/v3.1.23...v4.0.0) (2023-05-04)
+
+
+### Breaking Changes
+
+* **auto-upgrade:** upgraded packages [upgrade-all] ([734a6dd](https://github.com/sprucelabsai-community/postgres-data-store/commit/734a6dd))
+
 ## [3.1.23](https://github.com/sprucelabsai-community/postgres-data-store/compare/v3.1.22...v3.1.23) (2023-05-01)
 
 ## [3.1.22](https://github.com/sprucelabsai-community/postgres-data-store/compare/v3.1.21...v3.1.22) (2023-04-28)
