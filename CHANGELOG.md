@@ -1,3 +1,5 @@
+## [4.0.70](https://github.com/sprucelabsai-community/postgres-data-store/compare/v4.0.69...v4.0.70) (2023-07-23)
+
 ## [4.0.69](https://github.com/sprucelabsai-community/postgres-data-store/compare/v4.0.68...v4.0.69) (2023-07-23)
 
 ## [4.0.68](https://github.com/sprucelabsai-community/postgres-data-store/compare/v4.0.67...v4.0.68) (2023-07-14)
