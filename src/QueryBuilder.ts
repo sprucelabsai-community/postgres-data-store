@@ -29,7 +29,15 @@ export default class QueryBuilder {
 	}
 
 	public buildTableName(tableName: string) {
-		return `"${tableName}"`
+		return `${this.conditionalQuote(tableName)}`
+	}
+
+	private conditionalQuote(fieldName: string) {
+		return this.shouldQuote ? quote(fieldName) : fieldName
+	}
+
+	private get shouldQuote() {
+		return process.env.POSTGRES_SHOULD_QUOTE_FIELD_NAMES !== 'false'
 	}
 
 	private optionallyBuildWhere(
@@ -78,34 +86,37 @@ export default class QueryBuilder {
 		queryKeys.forEach((k) => {
 			let value = query[k]
 			const isNull = value === null && useIsNull
+			const formattedK = this.conditionalQuote(k)
 
 			if (value?.$in) {
 				values.push(...value.$in.map((v: unknown) => this.normalizeValue(v)))
 				set.push(
-					`"${k}" IN (${value.$in
+					`${formattedK} IN (${value.$in
 						.map(() => `$${++placeholderCount}`)
 						.join(', ')})`
 				)
 			} else if (value?.$regex) {
 				values.push(this.normalizeValue(value.$regex))
-				set.push(`"${k}" ~* $${++placeholderCount}`)
+				set.push(`${formattedK} ~* $${++placeholderCount}`)
 			} else if (value?.$lte) {
 				values.push(this.normalizeValue(value.$lte))
-				set.push(`"${k}" <= $${++placeholderCount}`)
+				set.push(`${formattedK} <= $${++placeholderCount}`)
 			} else if (value?.$lt) {
 				values.push(this.normalizeValue(value.$lt))
-				set.push(`"${k}" < $${++placeholderCount}`)
+				set.push(`${formattedK} < $${++placeholderCount}`)
 			} else if (value?.$gte) {
 				values.push(this.normalizeValue(value.$gte))
-				set.push(`"${k}" >= $${++placeholderCount}`)
+				set.push(`${formattedK} >= $${++placeholderCount}`)
 			} else if (value?.$gt) {
 				values.push(this.normalizeValue(value.$gt))
-				set.push(`"${k}" > $${++placeholderCount}`)
+				set.push(`${formattedK} > $${++placeholderCount}`)
 			} else if (typeof value?.$ne !== 'undefined') {
 				const v = value.$ne
 				v !== null && values.push(this.normalizeValue(v))
 				set.push(
-					`"${k}" ${v === null ? 'IS NOT NULL' : `!= $${++placeholderCount}`}`
+					`${formattedK} ${
+						v === null ? 'IS NOT NULL' : `!= $${++placeholderCount}`
+					}`
 				)
 			} else if (k === '$or') {
 				const { set: orWheres, values: orValues } = this.buildSetClausFor$Or(
@@ -124,7 +135,7 @@ export default class QueryBuilder {
 				values.push(...sub.values.map((v) => JSON.stringify(v)))
 				set.push(...sub.set)
 			} else if (isNull || value === undefined) {
-				set.push(`"${k}" IS NULL`)
+				set.push(`${formattedK} IS NULL`)
 			} else {
 				placeholderCount++
 
@@ -146,7 +157,7 @@ export default class QueryBuilder {
 				}
 
 				values.push(this.normalizeValue(value))
-				set.push(`${quote(k)} = ${placeholder}`)
+				set.push(`${this.conditionalQuote(k)} = ${placeholder}`)
 			}
 		})
 
@@ -186,7 +197,7 @@ export default class QueryBuilder {
 			this.splitRecordsIntoFieldsPlaceholdersAndValues(records)
 
 		const sql = `INSERT INTO ${this.buildTableName(tableName)} (${fields
-			.map((f) => `"${f}"`)
+			.map((f) => `${this.conditionalQuote(f)}`)
 			.join(', ')}) VALUES ${placeholders.join(', ')}`
 
 		return { sql, values }
@@ -245,7 +256,7 @@ export default class QueryBuilder {
 	private optionallyBuildSort(sort: QuerySortField[] | undefined) {
 		if (sort) {
 			const sortSpecs = sort.map(
-				(s) => `"${s.field}" ${s.direction.toUpperCase()}`
+				(s) => `${this.conditionalQuote(s.field)} ${s.direction.toUpperCase()}`
 			)
 			return ` ORDER BY ${sortSpecs.join(', ')}`
 		}
