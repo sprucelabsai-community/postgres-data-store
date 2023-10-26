@@ -1,3 +1,10 @@
+# [4.1.0](https://github.com/sprucelabsai-community/postgres-data-store/compare/v4.0.157...v4.1.0) (2023-10-26)
+
+
+### Features
+
+* POSTGRES_SHOULD_QUOTE_FIELD_NAMES = 'false' to disable quoting in sql generation ([1c02d9f](https://github.com/sprucelabsai-community/postgres-data-store/commit/1c02d9f))
+
 ## [4.0.157](https://github.com/sprucelabsai-community/postgres-data-store/compare/v4.0.156...v4.0.157) (2023-10-25)
 
 ## [4.0.156](https://github.com/sprucelabsai-community/postgres-data-store/compare/v4.0.155...v4.0.156) (2023-10-24)
