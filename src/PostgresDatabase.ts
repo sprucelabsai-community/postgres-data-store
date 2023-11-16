@@ -49,7 +49,7 @@ export default class PostgresDatabase implements Database {
 			values,
 		})
 
-		return results.rowCount
+		return results.rowCount ?? 0
 	}
 
 	public async count(
@@ -148,7 +148,7 @@ export default class PostgresDatabase implements Database {
 			text: sql,
 			values,
 		})
-		return results.rowCount
+		return results.rowCount ?? 0
 	}
 
 	public async dropDatabase(): Promise<void> {
@@ -223,7 +223,7 @@ export default class PostgresDatabase implements Database {
 			values,
 		})
 
-		return results.rowCount
+		return results.rowCount ?? 0
 	}
 
 	private async truncateTables() {
@@ -308,12 +308,13 @@ export default class PostgresDatabase implements Database {
 		} catch (err: any) {
 			const message = err.message as string | undefined
 
-			if (message?.includes('ECONNREFUSED')) {
+			if ((err.code ?? message)?.includes('ECONNREFUSED')) {
 				throw new DataStoresError({
 					code: 'UNABLE_TO_CONNECT_TO_DB',
 					originalError: err,
 				})
 			}
+
 			if (message?.includes('does not exist')) {
 				const match = message.match(/"([^"]*)"/) ?? ['', '']
 				throw new DataStoresError({
