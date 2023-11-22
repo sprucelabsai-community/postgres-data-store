@@ -52,7 +52,7 @@
   },
   "dependencies": {
     "@sprucelabs/data-stores": "^25.13.8",
-    "@sprucelabs/schema": "^29.0.90",
+    "@sprucelabs/schema": "^29.0.91",
     "pg": "^8.11.3"
   },
   "devDependencies": {
@@ -62,7 +62,7 @@
     "@sprucelabs/semantic-release": "^4.0.8",
     "@sprucelabs/spruce-test-fixtures": "^52.8.0",
     "@sprucelabs/test": "^8.0.32",
-    "@sprucelabs/test-utils": "^4.0.79",
+    "@sprucelabs/test-utils": "^4.0.80",
     "@types/node": "^18.14.0",
     "@types/pg": "^8.10.9",
     "chokidar-cli": "^3.0.0",
