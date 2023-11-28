@@ -51,14 +51,14 @@
     "watch.tsc": "tsc -w"
   },
   "dependencies": {
-    "@sprucelabs/data-stores": "^25.13.13",
+    "@sprucelabs/data-stores": "^25.13.14",
     "@sprucelabs/schema": "^29.0.92",
     "pg": "^8.11.3"
   },
   "devDependencies": {
-    "@sprucelabs/esm-postbuild": "^5.0.101",
+    "@sprucelabs/esm-postbuild": "^5.0.102",
     "@sprucelabs/jest-json-reporter": "^7.0.128",
-    "@sprucelabs/resolve-path-aliases": "^1.1.265",
+    "@sprucelabs/resolve-path-aliases": "^1.1.266",
     "@sprucelabs/semantic-release": "^4.0.8",
     "@sprucelabs/spruce-test-fixtures": "^52.8.0",
     "@sprucelabs/test": "^8.0.32",
