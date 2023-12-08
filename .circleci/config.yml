@@ -30,7 +30,7 @@ jobs:
           name: Restore DB
           command: |
             sudo apt install postgresql-client
-            psql postgres://postgres:password@localhost:5432/skill-tests < src/__tests__/support/test_database.sql
+            psql postgres://postgres:password@localhost:5432/skill-tests < src/__tests__/support/reset_dev_database.sql
       - spruce/install_deps_build_ci_test
       - spruce/exit_if_not_auto_upgrade
       - spruce/merge_auto_upgrade

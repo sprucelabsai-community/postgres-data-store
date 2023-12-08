@@ -20,6 +20,11 @@ SET default_tablespace = '';
 
 SET default_table_access_method = heap;
 
+-- start with dropping tables
+DROP TABLE IF EXISTS public.test_collection CASCADE;
+DROP TABLE IF EXISTS public."user" CASCADE;
+DROP SEQUENCE IF EXISTS public.test_collection_id_seq CASCADE;
+
 --
 -- Name: test_collection; Type: TABLE; Schema: public; Owner: taylorromero
 --
@@ -30,7 +35,7 @@ CREATE TABLE public.test_collection (
     count integer,
     "isPublic" boolean,
     number integer,
-    names jsonb,
+    names varchar(255)[],
     "uniqueField" character varying,
     "uniqueField2" character varying,
     "uniqueField3" character varying,
@@ -82,7 +87,7 @@ CREATE TABLE public."user" (
     count integer,
     "isPublic" boolean,
     number integer,
-    names jsonb,
+    names varchar(255)[],
     "uniqueField" character varying,
     "uniqueField2" character varying,
     "uniqueField3" character varying,

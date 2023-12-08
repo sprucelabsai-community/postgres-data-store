@@ -211,8 +211,8 @@ export default class QueryBuilderTest extends AbstractSpruceTest {
 				$push: { names: 'hey' },
 			},
 			expected: {
-				sql: `UPDATE "users" SET "names" = JSONB_SET(COALESCE(names || $1::JSONB, '[]'::JSONB), '{-1}', $1::JSONB) WHERE "id" = $2 RETURNING *`,
-				values: [JSON.stringify('hey'), '123'],
+				sql: `UPDATE "users" SET "names" = "names" || ARRAY[$1] WHERE "id" = $2 RETURNING *`,
+				values: ['hey', '123'],
 			},
 		})
 	}
@@ -224,8 +224,8 @@ export default class QueryBuilderTest extends AbstractSpruceTest {
 				$push: { names: 'what', things: 'hey' },
 			},
 			expected: {
-				sql: `UPDATE "users" SET "names" = JSONB_SET(COALESCE(names || $1::JSONB, '[]'::JSONB), '{-1}', $1::JSONB), "things" = JSONB_SET(COALESCE(names || $2::JSONB, '[]'::JSONB), '{-1}', $2::JSONB) RETURNING *`,
-				values: [JSON.stringify('what'), JSON.stringify('hey')],
+				sql: `UPDATE "users" SET "names" = "names" || ARRAY[$1], "things" = "things" || ARRAY[$2] RETURNING *`,
+				values: ['what', 'hey'],
 			},
 		})
 	}
@@ -273,7 +273,7 @@ export default class QueryBuilderTest extends AbstractSpruceTest {
 	@test()
 	protected static async canInsertRecordWithArrayField() {
 		this.assertCreateSqlEquals([{ firstName: 'Joe', names: ['a', 'b'] }], {
-			sql: `INSERT INTO "users" ("firstName", "names") VALUES ($1, $2::json) RETURNING *`,
+			sql: `INSERT INTO "users" ("firstName", "names") VALUES ($1, $2) RETURNING *`,
 			values: ['Joe', '{"a","b"}'],
 		})
 	}

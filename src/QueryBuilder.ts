@@ -129,10 +129,10 @@ export default class QueryBuilder {
 				const sub = this.buildSetClause({
 					query: value,
 					startingCount: placeholderCount++,
-					placeholderTemplate: `JSONB_SET(COALESCE(names || \${{count}}::JSONB, '[]'::JSONB), '{-1}', \${{count}}::JSONB)`,
+					placeholderTemplate: '"{{fieldName}}" || ARRAY[${{count}}]',
 				})
 
-				values.push(...sub.values.map((v) => JSON.stringify(v)))
+				values.push(...sub.values)
 				set.push(...sub.set)
 			} else if (isNull || value === undefined) {
 				set.push(`${formattedK} IS NULL`)
@@ -225,7 +225,7 @@ export default class QueryBuilder {
 			fields.forEach((f) => {
 				values.push(this.fieldValueToSqlValue(record, f))
 				let placeholder = `$${++placeholderCount}`
-				if (this.isValueObject(record[f])) {
+				if (this.isValueObject(record[f]) && !Array.isArray(record[f])) {
 					placeholder += `::json`
 				}
 				placeholders.push(placeholder)
