@@ -30,6 +30,9 @@ export default class PostgresDataStorePluginTest extends AbstractSpruceFixtureTe
 		assert.isEqual(this.plugin.getName(), 'postgres')
 	}
 
+	@test()
+	protected static async canTellArrayValueToWriteInPostgresFormat() {}
+
 	private static setSchema(schema: Schema) {
 		this.plugin = new PostgresDataStorePlugin(schema)
 	}

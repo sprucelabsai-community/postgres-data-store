@@ -274,7 +274,7 @@ export default class QueryBuilderTest extends AbstractSpruceTest {
 	protected static async canInsertRecordWithArrayField() {
 		this.assertCreateSqlEquals([{ firstName: 'Joe', names: ['a', 'b'] }], {
 			sql: `INSERT INTO "users" ("firstName", "names") VALUES ($1, $2::json) RETURNING *`,
-			values: ['Joe', '["a","b"]'],
+			values: ['Joe', '{"a","b"}'],
 		})
 	}
 

@@ -245,7 +245,13 @@ export default class QueryBuilder {
 			value = value.toString().replace(/\//g, '')
 		}
 		if (this.isValueObject(value)) {
-			value = JSON.stringify(value)
+			if (Array.isArray(value)) {
+				//in postgres, an array is notaded like this {1,2,3}
+				value = JSON.stringify(value)
+				value = `{${value.substring(1, value.length - 1)}}`
+			} else {
+				value = JSON.stringify(value)
+			}
 		}
 
 		return value ?? null
