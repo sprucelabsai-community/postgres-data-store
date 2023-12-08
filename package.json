@@ -51,8 +51,8 @@
     "watch.tsc": "tsc -w"
   },
   "dependencies": {
-    "@sprucelabs/data-stores": "^26.2.5",
-    "@sprucelabs/schema": "^29.2.4",
+    "@sprucelabs/data-stores": "^26.2.8",
+    "@sprucelabs/schema": "^29.3.0",
     "pg": "^8.11.3"
   },
   "devDependencies": {
