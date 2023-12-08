@@ -183,9 +183,18 @@ export default class QueryBuilder {
 		let { sql, values } = this.createWithoutReturning(tableName, records)
 		sql += ` RETURNING *`
 
+		this.log('create', sql, values)
+
 		return {
 			sql,
 			values,
+		}
+	}
+	private log(...args: any[]) {
+		if (process.env.POSTGRES_SHOULD_LOG_QUERIES === 'true') {
+			for (const arg of args) {
+				console.log(JSON.stringify(arg))
+			}
 		}
 	}
 
@@ -307,10 +316,14 @@ export default class QueryBuilder {
 			sql += ' RETURNING *'
 		}
 
-		return {
+		const results = {
 			sql,
 			values: [...values, ...whereValues],
 		}
+
+		this.log('update', results)
+
+		return results
 	}
 
 	public delete(tableName: string, query?: Query) {
@@ -318,6 +331,8 @@ export default class QueryBuilder {
 
 		const { values, sql: where } = this.optionallyBuildWhere(query ?? {})
 		sql += where
+
+		this.log('delete', sql, values)
 
 		return {
 			sql,
@@ -345,6 +360,8 @@ export default class QueryBuilder {
 			.join(', ')}`
 
 		sql += ' RETURNING *'
+
+		this.log('upsert', sql, values)
 
 		return {
 			sql,
