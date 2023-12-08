@@ -1,3 +1,11 @@
+# [5.0.0](https://github.com/sprucelabsai-community/postgres-data-store/compare/v4.2.0...v5.0.0) (2023-12-08)
+
+
+### Breaking Changes
+
+* array notation change ([a720b93](https://github.com/sprucelabsai-community/postgres-data-store/commit/a720b93))
+* handling array fields not as json ([5c25470](https://github.com/sprucelabsai-community/postgres-data-store/commit/5c25470))
+
 # [4.2.0](https://github.com/sprucelabsai-community/postgres-data-store/compare/v4.1.47...v4.2.0) (2023-12-08)
 
 
