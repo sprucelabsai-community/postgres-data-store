@@ -17,6 +17,7 @@ let ConnectClass: undefined | (new (connectionString: string) => Database)
 export default class PostgresDatabaseTest extends AbstractSpruceTest {
 	protected static async beforeEach() {
 		await super.beforeEach()
+		process.env.POSTGRES_SHOULD_QUOTE_FIELD_NAMES = 'true'
 		ConnectClass = undefined
 	}
 

@@ -37,7 +37,7 @@ export default class QueryBuilder {
 	}
 
 	private get shouldQuote() {
-		return process.env.POSTGRES_SHOULD_QUOTE_FIELD_NAMES !== 'false'
+		return process.env.POSTGRES_SHOULD_QUOTE_FIELD_NAMES === 'true'
 	}
 
 	private optionallyBuildWhere(

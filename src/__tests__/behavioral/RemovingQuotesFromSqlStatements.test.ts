@@ -6,7 +6,7 @@ export default class RemovingQuotesFromSqlStatementsTest extends AbstractSpruceF
 	private static query: QueryBuilder
 	protected static async beforeEach() {
 		await super.beforeEach()
-		process.env.POSTGRES_SHOULD_QUOTE_FIELD_NAMES = 'false'
+		delete process.env.POSTGRES_SHOULD_QUOTE_FIELD_NAMES
 		this.query = QueryBuilder.Builder()
 	}
 	@test()

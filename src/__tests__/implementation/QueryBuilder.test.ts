@@ -13,6 +13,7 @@ export default class QueryBuilderTest extends AbstractSpruceTest {
 
 	protected static async beforeEach(): Promise<void> {
 		await super.beforeEach()
+		process.env.POSTGRES_SHOULD_QUOTE_FIELD_NAMES = 'true'
 		this.query = QueryBuilder.Builder()
 		this.tableName = 'users'
 	}
