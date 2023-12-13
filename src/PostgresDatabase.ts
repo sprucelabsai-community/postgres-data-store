@@ -7,7 +7,7 @@ import {
 	UniqueIndex,
 } from '@sprucelabs/data-stores'
 import { assertOptions } from '@sprucelabs/schema'
-import { Client, QueryResult } from 'pg'
+import { Client } from 'pg'
 import QueryBuilder, { quote } from './QueryBuilder'
 
 export default class PostgresDatabase implements Database {
@@ -534,9 +534,12 @@ export default class PostgresDatabase implements Database {
 		return result
 	}
 
-	public async query<T = QueryResult>(query: string): Promise<T> {
-		return (await this.client.query({
+	public async query<T>(query: string, params?: any[]): Promise<T> {
+		const results = await this.client.query({
 			text: query,
-		})) as T
+			values: params,
+		})
+
+		return results.rows as T
 	}
 }

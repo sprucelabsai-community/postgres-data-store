@@ -72,7 +72,7 @@ export default class PostgresDatabaseTest extends AbstractSpruceTest {
 
 		const results = await db.query('SELECT * FROM public.user')
 
-		assert.isEqualDeep(results.rows, [created])
+		assert.isEqualDeep(results, [created])
 	}
 
 	@test()
@@ -93,6 +93,21 @@ export default class PostgresDatabaseTest extends AbstractSpruceTest {
 		assert.isTrue(isUUIDv4(db.generateId()))
 		assert.isTrue(isUUIDv4(db.generateId()))
 		assert.isTrue(isUUIDv4(db.generateId()))
+	}
+
+	@test()
+	protected static async canRunRawQueryWithParams() {
+		const db = await this.connect()
+
+		const person1 = await db.createOne('user', {
+			name: 'test',
+		})
+
+		const match = await db.query('SELECT * FROM public.user WHERE id = $1', [
+			person1.id,
+		])
+
+		assert.isEqualDeep(match, [person1])
 	}
 
 	private static async connect() {
