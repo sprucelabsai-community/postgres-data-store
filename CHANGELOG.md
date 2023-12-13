@@ -1,3 +1,10 @@
+# [5.1.0](https://github.com/sprucelabsai-community/postgres-data-store/compare/v5.0.3...v5.1.0) (2023-12-13)
+
+
+### Features
+
+* can passe params to query for placehodlers ([660da6b](https://github.com/sprucelabsai-community/postgres-data-store/commit/660da6b))
+
 ## [5.0.3](https://github.com/sprucelabsai-community/postgres-data-store/compare/v5.0.2...v5.0.3) (2023-12-12)
 
 ## [5.0.2](https://github.com/sprucelabsai-community/postgres-data-store/compare/v5.0.1...v5.0.2) (2023-12-10)
