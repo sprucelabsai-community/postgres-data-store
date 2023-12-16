@@ -52,7 +52,7 @@
   },
   "dependencies": {
     "@sprucelabs/data-stores": "^26.3.9",
-    "@sprucelabs/schema": "^29.3.5",
+    "@sprucelabs/schema": "^29.3.6",
     "pg": "^8.11.3"
   },
   "devDependencies": {
