@@ -121,7 +121,8 @@ export default class PostgresDatabaseTest extends AbstractSpruceTest {
 		db.client.query = () => response
 
 		const results = await db.query('SELECT * FROM public.user')
-		assert.isEqualDeep(results, [])
+		assert.isArray(results)
+		assert.isLength(results, 0)
 	}
 
 	private static async connect() {
