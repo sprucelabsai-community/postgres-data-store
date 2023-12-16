@@ -540,6 +540,6 @@ export default class PostgresDatabase implements Database {
 			values: params,
 		})
 
-		return results.rows as T
+		return (results?.rows as T) ?? ([] as T)
 	}
 }

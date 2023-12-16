@@ -110,6 +110,20 @@ export default class PostgresDatabaseTest extends AbstractSpruceTest {
 		assert.isEqualDeep(match, [person1])
 	}
 
+	@test('returns an empty array if client returns undefined', undefined)
+	@test('returns an empty array if client returns rows undefined', {
+		rows: undefined,
+	})
+	protected static async returnsAnArrayIfClientReturnsUndefined(response: any) {
+		const db = await this.connect()
+
+		//@ts-ignore
+		db.client.query = () => response
+
+		const results = await db.query('SELECT * FROM public.user')
+		assert.isEqualDeep(results, [])
+	}
+
 	private static async connect() {
 		const { db: dbr } = await postgresConnect()
 		const db = dbr as PostgresDatabase
