@@ -25,6 +25,8 @@ export default class QueryBuilder {
 		sql += this.optionallyBuildSort(sort)
 		sql += this.optionallyBuildLimit(limit)
 
+		this.log('find', sql, values)
+
 		return { sql, values }
 	}
 
@@ -190,6 +192,7 @@ export default class QueryBuilder {
 			values,
 		}
 	}
+
 	private log(...args: any[]) {
 		if (process.env.POSTGRES_SHOULD_LOG_QUERIES === 'true') {
 			for (const arg of args) {
