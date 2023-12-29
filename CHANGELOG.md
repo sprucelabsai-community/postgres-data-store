@@ -1,3 +1,21 @@
+## [5.1.18](https://github.com/sprucelabsai-community/postgres-data-store/compare/v5.1.17...v5.1.18) (2023-12-23)
+
+## [5.1.17](https://github.com/sprucelabsai-community/postgres-data-store/compare/v5.1.16...v5.1.17) (2023-12-19)
+
+## [5.1.16](https://github.com/sprucelabsai-community/postgres-data-store/compare/v5.1.15...v5.1.16) (2023-12-19)
+
+## [5.1.15](https://github.com/sprucelabsai-community/postgres-data-store/compare/v5.1.14...v5.1.15) (2023-12-19)
+
+## [5.1.14](https://github.com/sprucelabsai-community/postgres-data-store/compare/v5.1.13...v5.1.14) (2023-12-18)
+
+## [5.1.13](https://github.com/sprucelabsai-community/postgres-data-store/compare/v5.1.12...v5.1.13) (2023-12-18)
+
+## [5.1.12](https://github.com/sprucelabsai-community/postgres-data-store/compare/v5.1.11...v5.1.12) (2023-12-17)
+
+## [5.1.11](https://github.com/sprucelabsai-community/postgres-data-store/compare/v5.1.10...v5.1.11) (2023-12-17)
+
+## [5.1.10](https://github.com/sprucelabsai-community/postgres-data-store/compare/v5.1.9...v5.1.10) (2023-12-16)
+
 ## [5.1.9](https://github.com/sprucelabsai-community/postgres-data-store/compare/v5.1.8...v5.1.9) (2023-12-16)
 
 ## [5.1.8](https://github.com/sprucelabsai-community/postgres-data-store/compare/v5.1.7...v5.1.8) (2023-12-16)
