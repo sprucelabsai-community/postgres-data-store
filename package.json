@@ -61,8 +61,8 @@
     "@sprucelabs/spruce-test-fixtures": "^61.1.33",
     "@sprucelabs/test": "^8.0.50",
     "@sprucelabs/test-utils": "^4.0.157",
-    "@types/node": "^20.12.4",
-    "@types/pg": "^8.11.4",
+    "@types/node": "^20.12.7",
+    "@types/pg": "^8.11.5",
     "chokidar-cli": "^3.0.0",
     "concurrently": "^8.2.2",
     "eslint": "^8.57.0",
@@ -72,7 +72,7 @@
     "prettier": "^3.2.5",
     "ts-node": "^10.9.2",
     "tsc-watch": "^6.2.0",
-    "typescript": "^5.4.4"
+    "typescript": "^5.4.5"
   },
   "jest": {
     "testRunner": "jest-circus/runner",
