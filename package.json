@@ -4,7 +4,8 @@
   "skill": {
     "namespace": "postgres-data-store",
     "upgradeIgnoreList": [
-      "@sprucelabs/spruce-core-schemas"
+      "@sprucelabs/spruce-core-schemas",
+      "@sprucelabs/spruce-test-fixtures"
     ]
   },
   "files": [
