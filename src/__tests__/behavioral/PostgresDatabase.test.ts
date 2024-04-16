@@ -1,13 +1,13 @@
 import {
-	Database,
-	databaseAssertUtil,
-	TestConnect,
+    Database,
+    databaseAssertUtil,
+    TestConnect,
 } from '@sprucelabs/data-stores'
 import AbstractSpruceTest, {
-	test,
-	assert,
-	errorAssert,
-	generateId,
+    test,
+    assert,
+    errorAssert,
+    generateId,
 } from '@sprucelabs/test-utils'
 import { QueryConfig } from 'pg'
 import PostgresDatabase from '../../PostgresDatabase'
@@ -15,165 +15,168 @@ import PostgresDatabase from '../../PostgresDatabase'
 let ConnectClass: undefined | (new (connectionString: string) => Database)
 
 export default class PostgresDatabaseTest extends AbstractSpruceTest {
-	protected static async beforeEach() {
-		await super.beforeEach()
-		process.env.POSTGRES_SHOULD_QUOTE_FIELD_NAMES = 'true'
-		ConnectClass = undefined
-	}
+    protected static async beforeEach() {
+        await super.beforeEach()
+        process.env.POSTGRES_SHOULD_QUOTE_FIELD_NAMES = 'true'
+        ConnectClass = undefined
+    }
 
-	@test()
-	protected static async throwsWhenMissingRequired() {
-		//@ts-ignore
-		const err = assert.doesThrow(() => new PostgresDatabase())
-		errorAssert.assertError(err, 'MISSING_PARAMETERS', {
-			parameters: ['connectionString'],
-		})
-	}
+    @test()
+    protected static async throwsWhenMissingRequired() {
+        //@ts-ignore
+        const err = assert.doesThrow(() => new PostgresDatabase())
+        errorAssert.assertError(err, 'MISSING_PARAMETERS', {
+            parameters: ['connectionString'],
+        })
+    }
 
-	@test()
-	protected static async runsSuiteOfDatabaseTests() {
-		await databaseAssertUtil.runSuite(postgresConnect)
-	}
+    @test()
+    protected static async runsSuiteOfDatabaseTests() {
+        await databaseAssertUtil.runSuite(postgresConnect)
+    }
 
-	@test()
-	protected static async runsSuiteOfDatabaseTestsWithTableNameUser() {
-		databaseAssertUtil.collectionName = 'user'
-		await databaseAssertUtil.runSuite(postgresConnect)
-	}
+    @test()
+    protected static async runsSuiteOfDatabaseTestsWithTableNameUser() {
+        databaseAssertUtil.collectionName = 'user'
+        await databaseAssertUtil.runSuite(postgresConnect)
+    }
 
-	@test()
-	protected static async canRunRawQuery() {
-		const spy = await this.connectWithSpy()
+    @test()
+    protected static async canRunRawQuery() {
+        const spy = await this.connectWithSpy()
 
-		let passedOptions: QueryConfig | undefined
+        let passedOptions: QueryConfig | undefined
 
-		//@ts-ignore
-		spy.getClient().query = async (options: QueryConfig) => {
-			passedOptions = options
-			return {} as any
-		}
+        //@ts-ignore
+        spy.getClient().query = async (options: QueryConfig) => {
+            passedOptions = options
+            return {} as any
+        }
 
-		const query = generateId()
-		await spy.query(query)
+        const query = generateId()
+        await spy.query(query)
 
-		assert.isEqual(passedOptions?.text, query)
-	}
+        assert.isEqual(passedOptions?.text, query)
+    }
 
-	@test()
-	protected static async retunsResultsFromRawQuery() {
-		const db = await this.connect()
+    @test()
+    protected static async retunsResultsFromRawQuery() {
+        const db = await this.connect()
 
-		//TODO need a truncate or something else here
-		await db.dropDatabase()
+        //TODO need a truncate or something else here
+        await db.dropDatabase()
 
-		const created = await db.createOne('user', {
-			name: 'test',
-		})
+        const created = await db.createOne('user', {
+            name: 'test',
+        })
 
-		const results = await db.query('SELECT * FROM public.user')
+        const results = await db.query('SELECT * FROM public.user')
 
-		assert.isEqualDeep(results, [created])
-	}
+        assert.isEqualDeep(results, [created])
+    }
 
-	@test()
-	protected static async showsAsNotConnectedBeforeConnected() {
-		const db = new PostgresDatabase('postgres://localhost:5432/skill-tests')
-		assert.isFalse(db.isConnected())
-	}
+    @test()
+    protected static async showsAsNotConnectedBeforeConnected() {
+        const db = new PostgresDatabase('postgres://localhost:5432/skill-tests')
+        assert.isFalse(db.isConnected())
+    }
 
-	@test()
-	protected static async generatesIdAsUuidIfSet() {
-		const db = await this.connect()
+    @test()
+    protected static async generatesIdAsUuidIfSet() {
+        const db = await this.connect()
 
-		assert.isEqual(db.generateId(), '1')
-		assert.isEqual(db.generateId(), '2')
+        assert.isEqual(db.generateId(), '1')
+        assert.isEqual(db.generateId(), '2')
 
-		process.env.POSTGRES_ID_FORMAT = 'uuid'
+        process.env.POSTGRES_ID_FORMAT = 'uuid'
 
-		assert.isTrue(isUUIDv4(db.generateId()))
-		assert.isTrue(isUUIDv4(db.generateId()))
-		assert.isTrue(isUUIDv4(db.generateId()))
-	}
+        assert.isTrue(isUUIDv4(db.generateId()))
+        assert.isTrue(isUUIDv4(db.generateId()))
+        assert.isTrue(isUUIDv4(db.generateId()))
+    }
 
-	@test()
-	protected static async canRunRawQueryWithParams() {
-		const db = await this.connect()
+    @test()
+    protected static async canRunRawQueryWithParams() {
+        const db = await this.connect()
 
-		const person1 = await db.createOne('user', {
-			name: 'test',
-		})
+        const person1 = await db.createOne('user', {
+            name: 'test',
+        })
 
-		const match = await db.query('SELECT * FROM public.user WHERE id = $1', [
-			person1.id,
-		])
+        const match = await db.query(
+            'SELECT * FROM public.user WHERE id = $1',
+            [person1.id]
+        )
 
-		assert.isEqualDeep(match, [person1])
-	}
+        assert.isEqualDeep(match, [person1])
+    }
 
-	@test('returns an empty array if client returns undefined', undefined)
-	@test('returns an empty array if client returns rows undefined', {
-		rows: undefined,
-	})
-	protected static async returnsAnArrayIfClientReturnsUndefined(response: any) {
-		const db = await this.connect()
+    @test('returns an empty array if client returns undefined', undefined)
+    @test('returns an empty array if client returns rows undefined', {
+        rows: undefined,
+    })
+    protected static async returnsAnArrayIfClientReturnsUndefined(
+        response: any
+    ) {
+        const db = await this.connect()
 
-		//@ts-ignore
-		db.client.query = () => response
+        //@ts-ignore
+        db.client.query = () => response
 
-		const results = await db.query('SELECT * FROM public.user')
-		assert.isArray(results)
-		assert.isLength(results, 0)
-	}
+        const results = await db.query('SELECT * FROM public.user')
+        assert.isArray(results)
+        assert.isLength(results, 0)
+    }
 
-	private static async connect() {
-		const { db: dbr } = await postgresConnect()
-		const db = dbr as PostgresDatabase
-		return db
-	}
+    private static async connect() {
+        const { db: dbr } = await postgresConnect()
+        const db = dbr as PostgresDatabase
+        return db
+    }
 
-	private static async connectWithSpy() {
-		this.dropInSpy()
-		const { db } = await postgresConnect()
-		const spy = db as SpyPostgresDatabase
-		return spy
-	}
+    private static async connectWithSpy() {
+        this.dropInSpy()
+        const { db } = await postgresConnect()
+        const spy = db as SpyPostgresDatabase
+        return spy
+    }
 
-	private static dropInSpy() {
-		ConnectClass = SpyPostgresDatabase
-	}
+    private static dropInSpy() {
+        ConnectClass = SpyPostgresDatabase
+    }
 }
 
 class SpyPostgresDatabase extends PostgresDatabase {
-	public getClient() {
-		return this.client
-	}
+    public getClient() {
+        return this.client
+    }
 }
 
 const postgresConnect: TestConnect = async (
-	connectionString?: string,
-	_dbName?: string
+    connectionString?: string,
+    _dbName?: string
 ) => {
-	const connect =
-		connectionString ??
-		'postgres://postgres:password@localhost:5432/skill-tests'
+    const connect =
+        connectionString ??
+        'postgres://postgres:password@localhost:5432/skill-tests'
 
-	const db = ConnectClass
-		? new ConnectClass(connect)
-		: new PostgresDatabase(connect)
+    const db = ConnectClass
+        ? new ConnectClass(connect)
+        : new PostgresDatabase(connect)
 
-	await db.connect()
+    await db.connect()
 
-	const badDatabaseName = generateId()
-	return {
-		db,
-		scheme: 'postgres://',
-		connectionStringWithRandomBadDatabaseName: `postgres://postgres:password@localhost:5432/${badDatabaseName}`,
-		badDatabaseName,
-	}
+    const badDatabaseName = generateId()
+    return {
+        db,
+        scheme: 'postgres://',
+        connectionStringWithRandomBadDatabaseName: `postgres://postgres:password@localhost:5432/${badDatabaseName}`,
+        badDatabaseName,
+    }
 }
 
 function isUUIDv4(input: string): boolean {
-	const uuidv4Regex =
-		/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/
-	return uuidv4Regex.test(input)
+    const uuidv4Regex =
+        /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/
+    return uuidv4Regex.test(input)
 }
