@@ -21,7 +21,7 @@
     "sprucebot",
     "sprucelabs"
   ],
-  "version": "5.1.174",
+  "version": "6.0.0",
   "scripts": {
     "build.ci": "yarn build.tsc && yarn build.resolve-paths && yarn lint",
     "build.dev": "yarn build.tsc --sourceMap ; yarn resolve-paths.lint",
