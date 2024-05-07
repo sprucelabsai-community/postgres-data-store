@@ -71,7 +71,7 @@ class PostgresDataStorePlugin implements DataStorePlugin {
         updates: Record<string, any>
     ): Promise<DataStorePluginWillUpdateOneResponse> {
         return {
-            newValues: {
+            newUpdates: {
                 ...updates,
                 dateCreated: new Date(updates.dateCreated).toISOString(),
             },
