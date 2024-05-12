@@ -50,7 +50,7 @@
   },
   "dependencies": {
     "@sprucelabs/data-stores": "^28.0.12",
-    "@sprucelabs/schema": "^30.0.41",
+    "@sprucelabs/schema": "^30.0.42",
     "pg": "^8.11.5"
   },
   "devDependencies": {
