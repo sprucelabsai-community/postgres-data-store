@@ -50,7 +50,7 @@
   },
   "dependencies": {
     "@sprucelabs/data-stores": "^28.0.22",
-    "@sprucelabs/schema": "^30.0.57",
+    "@sprucelabs/schema": "^30.0.58",
     "pg": "^8.11.5"
   },
   "devDependencies": {
@@ -59,7 +59,7 @@
     "@sprucelabs/resolve-path-aliases": "^2.0.26",
     "@sprucelabs/semantic-release": "^5.0.1",
     "@sprucelabs/test": "^9.0.17",
-    "@sprucelabs/test-utils": "^5.0.46",
+    "@sprucelabs/test-utils": "^5.0.47",
     "@types/node": "^20.12.12",
     "@types/pg": "^8.11.6",
     "chokidar-cli": "^3.0.0",
