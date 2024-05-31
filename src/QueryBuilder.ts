@@ -1,4 +1,10 @@
-import { QueryOptions, QuerySortField } from '@sprucelabs/data-stores'
+import {
+    QueryOptions,
+    QuerySortField,
+    UniqueIndex,
+    normalizeIndex,
+} from '@sprucelabs/data-stores'
+import { generateIndexName, generateKeyExpressions } from './indexUtils'
 import { Query } from './postgres.types'
 
 export default class QueryBuilder {
@@ -6,6 +12,28 @@ export default class QueryBuilder {
 
     public static Builder() {
         return new this()
+    }
+
+    public createIndex(
+        tableName: string,
+        index: UniqueIndex,
+        isUnique = false
+    ): BuiltQuery {
+        const { fields, filter } = normalizeIndex(index)
+        const indexName = generateIndexName(tableName, index)
+        const keys = generateKeyExpressions(fields)
+
+        let query = `CREATE ${
+            isUnique ? `UNIQUE` : ''
+        } INDEX ${indexName} ON "${tableName}" (${keys})`
+
+        if (filter) {
+            const { sql: where } = this.optionallyBuildWhere(filter)
+            debugger
+            query += where
+        }
+
+        return { sql: query, values: [] }
     }
 
     public find(
@@ -52,7 +80,7 @@ export default class QueryBuilder {
 
         if ((queryKeys ?? []).length > 0) {
             const { set: columnSpecs, values: whereValues } =
-                this.buildSetClause({
+                this.buildEqualityClause({
                     query,
                     startingCount: startingPlaceholderCount,
                     isBuildingWhere: true,
@@ -63,7 +91,7 @@ export default class QueryBuilder {
         return { values, sql }
     }
 
-    private buildSetClause(options: {
+    private buildEqualityClause(options: {
         query: Query
         startingCount?: number
         placeholderTemplate?: string
@@ -100,6 +128,8 @@ export default class QueryBuilder {
                         .map(() => `$${++placeholderCount}`)
                         .join(', ')})`
                 )
+            } else if (value?.$exists) {
+                set.push(`${formattedK} IS NOT NULL`)
             } else if (value?.$regex) {
                 values.push(this.normalizeValue(value.$regex))
                 set.push(`${formattedK} ~* $${++placeholderCount}`)
@@ -129,7 +159,7 @@ export default class QueryBuilder {
                 set.push(`(${orWheres.join(' OR ')})`)
                 values.push(...orValues)
             } else if (k === '$push') {
-                const sub = this.buildSetClause({
+                const sub = this.buildEqualityClause({
                     query: value,
                     startingCount: placeholderCount++,
                     placeholderTemplate: '"{{fieldName}}" || ARRAY[${{count}}]',
@@ -172,7 +202,7 @@ export default class QueryBuilder {
         const orValues: unknown[] = []
 
         value.forEach((q: Record<string, any>) => {
-            const { set: where, values } = this.buildSetClause({
+            const { set: where, values } = this.buildEqualityClause({
                 query: q,
                 startingCount: placeholderCount++,
             })
@@ -321,7 +351,7 @@ export default class QueryBuilder {
         updates: Record<string, any>,
         shouldReturnUpdatedRecords = true
     ): { sql: string; values: unknown[] } {
-        const { set: set, values } = this.buildSetClause({
+        const { set: set, values } = this.buildEqualityClause({
             query: updates,
             startingCount: 0,
             useIsNull: false,

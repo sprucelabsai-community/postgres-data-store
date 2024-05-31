@@ -3,12 +3,14 @@ import {
     Database,
     DataStoresError,
     Index,
+    normalizeIndex,
     QueryOptions,
     UniqueIndex,
 } from '@sprucelabs/data-stores'
 import { assertOptions } from '@sprucelabs/schema'
 import { Client } from 'pg'
-import QueryBuilder, { quote } from './QueryBuilder'
+import { generateIndexName } from './indexUtils'
+import QueryBuilder from './QueryBuilder'
 
 export default class PostgresDatabase implements Database {
     private connectionString: string
@@ -377,9 +379,9 @@ export default class PostgresDatabase implements Database {
 
     public async dropIndex(
         collectionName: string,
-        fields: UniqueIndex
+        index: UniqueIndex
     ): Promise<void> {
-        const indexName = this.generateIndexName(collectionName, fields)
+        const indexName = this.generateIndexName(collectionName, index)
         const query = `DROP INDEX ${indexName}`
 
         try {
@@ -389,7 +391,7 @@ export default class PostgresDatabase implements Database {
         } catch (err: any) {
             throw new DataStoresError({
                 code: 'INDEX_NOT_FOUND',
-                missingIndex: fields,
+                missingIndex: normalizeIndex(index).fields,
                 collectionName,
             })
         }
@@ -475,15 +477,14 @@ export default class PostgresDatabase implements Database {
 
     private async executeCreateIndex(
         collection: string,
-        fields: UniqueIndex,
+        index: UniqueIndex,
         isUnique: boolean
     ) {
-        const indexName = this.generateIndexName(collection, fields)
-        const keys = this.generateKeyExpressions(fields)
-
-        const query = `CREATE ${
-            isUnique ? `UNIQUE` : ''
-        } INDEX ${indexName} ON "${collection}" (${keys})`
+        const { sql: query } = this.queries.createIndex(
+            collection,
+            index,
+            isUnique
+        )
 
         try {
             await this.client.query({
@@ -502,23 +503,8 @@ export default class PostgresDatabase implements Database {
         }
     }
 
-    private generateKeyExpressions(fields: UniqueIndex) {
-        return fields.map((f) => this.generateKeyExpression(f)).join(', ')
-    }
-
-    private generateKeyExpression(field: string) {
-        if (field.includes('.')) {
-            const parts = field.split('.')
-            return `(${parts[0]}->>'${parts[1]}')`
-        }
-
-        return quote(field)
-    }
-
-    private generateIndexName(collection: string, fields: UniqueIndex) {
-        return `${collection}_${fields
-            .map((f) => f.toLowerCase())
-            .join('_')}${'_index'}`.replace(/\./g, '_')
+    private generateIndexName(collection: string, index: UniqueIndex) {
+        return generateIndexName(collection, index)
     }
 
     public async close(): Promise<void> {
