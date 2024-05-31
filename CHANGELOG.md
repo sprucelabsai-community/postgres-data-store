@@ -1,3 +1,10 @@
+# [6.1.0](https://github.com/sprucelabsai-community/postgres-data-store/compare/v6.0.69...v6.1.0) (2024-05-31)
+
+
+### Features
+
+* unique indexes with filters ([c247e99](https://github.com/sprucelabsai-community/postgres-data-store/commit/c247e99))
+
 ## [6.0.69](https://github.com/sprucelabsai-community/postgres-data-store/compare/v6.0.68...v6.0.69) (2024-05-24)
 
 ## [6.0.68](https://github.com/sprucelabsai-community/postgres-data-store/compare/v6.0.67...v6.0.68) (2024-05-24)
