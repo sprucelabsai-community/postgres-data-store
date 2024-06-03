@@ -29,7 +29,6 @@ export default class QueryBuilder {
 
         if (filter) {
             const { sql: where } = this.optionallyBuildWhere(filter)
-            debugger
             query += where
         }
 
@@ -128,7 +127,7 @@ export default class QueryBuilder {
                         .map(() => `$${++placeholderCount}`)
                         .join(', ')})`
                 )
-            } else if (value?.$exists) {
+            } else if (value?.$type === 'string' || value?.$exists) {
                 set.push(`${formattedK} IS NOT NULL`)
             } else if (value?.$regex) {
                 values.push(this.normalizeValue(value.$regex))
