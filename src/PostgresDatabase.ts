@@ -259,6 +259,7 @@ export default class PostgresDatabase implements Database {
         collection: string,
         values: Record<string, any>
     ): Promise<Record<string, any>> {
+        debugger
         const rows = await this.create(collection, [values])
         return rows[0]
     }
@@ -429,6 +430,12 @@ export default class PostgresDatabase implements Database {
         const indexesToAdd = pluckMissingIndexes(indexes, existingIndexes)
         const indexesToRemove = pluckMissingIndexes(existingIndexes, indexes)
 
+        await Promise.all(
+            indexesToRemove.map((index) =>
+                this.dropIndex(collectionName, index)
+            )
+        )
+
         await Promise.all([
             ...indexesToAdd.map(async (index) => {
                 try {
@@ -447,9 +454,6 @@ export default class PostgresDatabase implements Database {
                 }
                 return null
             }),
-            ...indexesToRemove.map((index) =>
-                this.dropIndex(collectionName, index)
-            ),
         ])
     }
 
