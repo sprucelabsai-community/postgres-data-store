@@ -1,4 +1,4 @@
-import { UniqueIndex, normalizeIndex } from '@sprucelabs/data-stores'
+import { Index, normalizeIndex } from '@sprucelabs/data-stores'
 import { quote } from './QueryBuilder'
 
 export function generateKeyExpression(field: string) {
@@ -16,8 +16,8 @@ export function generateKeyExpressions(fields: string[]) {
     return fields.map((f) => generateKeyExpression(f)).join(', ')
 }
 
-export function generateIndexName(collection: string, index: UniqueIndex) {
-    return `${collection}_${normalizeIndex(index)
-        .fields.map((f) => f.toLowerCase())
-        .join('_')}${'_index'}`.replace(/\./g, '_')
+export function generateIndexName(collection: string, index: Index) {
+    return `${collection}_${normalizeIndex(index).fields.join(
+        '_'
+    )}${'_index'}`.replace(/\./g, '_')
 }

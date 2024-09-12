@@ -1,7 +1,7 @@
 import {
+    Index,
     QueryOptions,
     QuerySortField,
-    UniqueIndex,
     normalizeIndex,
 } from '@sprucelabs/data-stores'
 import { generateIndexName, generateKeyExpressions } from './indexUtils'
@@ -16,23 +16,31 @@ export default class QueryBuilder {
 
     public createIndex(
         tableName: string,
-        index: UniqueIndex,
+        index: Index,
         isUnique = false
     ): BuiltQuery {
         const { fields, filter } = normalizeIndex(index)
         const indexName = generateIndexName(tableName, index)
         const keys = generateKeyExpressions(fields)
+        let values: unknown[] = []
 
         let query = `CREATE ${
             isUnique ? `UNIQUE` : ''
-        } INDEX ${indexName} ON "${tableName}" (${keys})`
+        } INDEX "${indexName}" ON "${tableName}" (${keys})`
 
         if (filter) {
-            const { sql: where } = this.optionallyBuildWhere(filter)
+            const { sql: where, values: v } = this.optionallyBuildWhere(filter)
             query += where
+            values = v
         }
 
-        return { sql: query, values: [] }
+        if (values) {
+            for (let i = 0; i < values.length; i++) {
+                query = query.replace(`$${i + 1}`, values[i] as string)
+            }
+        }
+
+        return { sql: query, values }
     }
 
     public find(

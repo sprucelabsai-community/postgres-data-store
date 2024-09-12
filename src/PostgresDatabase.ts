@@ -3,9 +3,10 @@ import {
     Database,
     DataStoresError,
     Index,
+    IndexWithFilter,
     normalizeIndex,
+    pluckMissingIndexes,
     QueryOptions,
-    UniqueIndex,
 } from '@sprucelabs/data-stores'
 import { assertOptions } from '@sprucelabs/schema'
 import { Client } from 'pg'
@@ -132,7 +133,7 @@ export default class PostgresDatabase implements Database {
 
     public async getIndexes(
         collectionName: string
-    ): Promise<Index[] | UniqueIndex[]> {
+    ): Promise<IndexWithFilter[]> {
         return this.executeGetIndexes(collectionName, false)
     }
 
@@ -174,7 +175,7 @@ export default class PostgresDatabase implements Database {
 
         for (const indexName of indexNames) {
             try {
-                await this.client.query(`DROP INDEX ${indexName}`)
+                await this.client.query(`DROP INDEX "${indexName}"`)
             } catch (err: any) {
                 console.info('Failed to drop index', indexName, err.stack)
             }
@@ -349,10 +350,10 @@ export default class PostgresDatabase implements Database {
 
     public async getUniqueIndexes(
         collectionName: string
-    ): Promise<UniqueIndex[]> {
+    ): Promise<IndexWithFilter[]> {
         const isUnique = true
 
-        const uniqueIndexes: string[][] = await this.executeGetIndexes(
+        const uniqueIndexes = await this.executeGetIndexes(
             collectionName,
             isUnique
         )
@@ -360,29 +361,33 @@ export default class PostgresDatabase implements Database {
         return uniqueIndexes
     }
 
-    private async executeGetIndexes(collectionName: string, isUnique: boolean) {
-        const query = `SELECT indexname FROM pg_indexes WHERE tablename = '${collectionName}' AND indexdef ${
+    private async executeGetIndexes(
+        collectionName: string,
+        isUnique: boolean
+    ): Promise<IndexWithFilter[]> {
+        const query = `SELECT * FROM pg_indexes WHERE tablename = '${collectionName}' AND indexdef ${
             isUnique ? '' : 'NOT'
         } LIKE '%UNIQUE%';`
         const res = await this.client.query(query)
-        const uniqueIndexes: string[][] = []
+        const uniqueIndexes: IndexWithFilter[] = []
 
         res.rows.forEach((row) => {
             const indexName = row.indexname.replace(`${collectionName}_`, '')
-            const fields = indexName.split('_').slice(0, -1)
+            const fields = indexName.split('_').slice(0, -1) as string[]
             if (fields.length > 0) {
-                uniqueIndexes.push(fields)
+                uniqueIndexes.push({ fields })
             }
         })
+
         return uniqueIndexes
     }
 
     public async dropIndex(
         collectionName: string,
-        index: UniqueIndex
+        index: Index
     ): Promise<void> {
         const indexName = this.generateIndexName(collectionName, index)
-        const query = `DROP INDEX ${indexName}`
+        const query = `DROP INDEX "${indexName}"`
 
         try {
             await this.client.query({
@@ -406,32 +411,23 @@ export default class PostgresDatabase implements Database {
 
     public async syncUniqueIndexes(
         collectionName: string,
-        indexes: UniqueIndex[]
+        indexes: Index[]
     ): Promise<void> {
         await this.executeSyncIndexes(collectionName, indexes, true)
     }
 
     private async executeSyncIndexes(
         collectionName: string,
-        indexes: UniqueIndex[],
+        indexes: Index[],
         isUnique: boolean
     ) {
-        const existingIndexes: string[][] = await this.executeGetIndexes(
+        const existingIndexes = await this.executeGetIndexes(
             collectionName,
             isUnique
         )
 
-        const indexesToAdd = indexes.filter(
-            (index) =>
-                !existingIndexes.find((existing) =>
-                    this.areIndexesEqual(existing, index)
-                )
-        )
-
-        const indexesToRemove = existingIndexes.filter(
-            (existing) =>
-                !indexes.find((index) => this.areIndexesEqual(existing, index))
-        )
+        const indexesToAdd = pluckMissingIndexes(indexes, existingIndexes)
+        const indexesToRemove = pluckMissingIndexes(existingIndexes, indexes)
 
         await Promise.all([
             ...indexesToAdd.map(async (index) => {
@@ -457,19 +453,9 @@ export default class PostgresDatabase implements Database {
         ])
     }
 
-    private areIndexesEqual(
-        existing: UniqueIndex,
-        index: UniqueIndex
-    ): unknown {
-        return (
-            this.generateIndexName('any', existing) ===
-            this.generateIndexName('any', index)
-        )
-    }
-
     public async createUniqueIndex(
         collection: string,
-        fields: UniqueIndex
+        fields: Index
     ): Promise<void> {
         const isUnique = true
         await this.executeCreateIndex(collection, fields, isUnique)
@@ -477,7 +463,7 @@ export default class PostgresDatabase implements Database {
 
     private async executeCreateIndex(
         collection: string,
-        index: UniqueIndex,
+        index: Index,
         isUnique: boolean
     ) {
         const { sql: query } = this.queries.createIndex(
@@ -485,6 +471,10 @@ export default class PostgresDatabase implements Database {
             index,
             isUnique
         )
+
+        if (normalizeIndex(index).filter) {
+            debugger
+        }
 
         try {
             await this.client.query({
@@ -495,7 +485,7 @@ export default class PostgresDatabase implements Database {
                 throw new DataStoresError({
                     code: 'INDEX_EXISTS',
                     collectionName: collection,
-                    index: ['uniqueField'],
+                    index: normalizeIndex(index).fields,
                 })
             }
 
@@ -503,7 +493,7 @@ export default class PostgresDatabase implements Database {
         }
     }
 
-    private generateIndexName(collection: string, index: UniqueIndex) {
+    private generateIndexName(collection: string, index: Index) {
         return generateIndexName(collection, index)
     }
 

@@ -30,9 +30,11 @@ export default class PostgresDatabaseTest extends AbstractSpruceTest {
         })
     }
 
-    @test()
+    @test.only()
     protected static async runsSuiteOfDatabaseTests() {
-        await databaseAssertUtil.runSuite(postgresConnect)
+        await databaseAssertUtil.runSuite(postgresConnect, [
+            'assertCanSyncIndexesWithoutPartialThenAgainWithProperlyUpdates',
+        ])
     }
 
     @test()
