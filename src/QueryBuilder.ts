@@ -135,10 +135,10 @@ export default class QueryBuilder {
                         .map(() => `$${++placeholderCount}`)
                         .join(', ')})`
                 )
-            } else if (value?.$exsts) {
+            } else if (value?.$exists) {
                 set.push(`${formattedK} IS NOT NULL`)
             } else if (value?.$type === 'string') {
-                set.push(`${formattedK} ~ '[A-Za-z]'`)
+                set.push(`${formattedK} ~ '[A-Za-z]+'`)
             } else if (value?.$regex) {
                 values.push(this.normalizeValue(value.$regex))
                 set.push(`${formattedK} ~* $${++placeholderCount}`)

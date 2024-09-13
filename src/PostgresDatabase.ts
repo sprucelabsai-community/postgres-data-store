@@ -259,7 +259,6 @@ export default class PostgresDatabase implements Database {
         collection: string,
         values: Record<string, any>
     ): Promise<Record<string, any>> {
-        debugger
         const rows = await this.create(collection, [values])
         return rows[0]
     }
@@ -461,8 +460,7 @@ export default class PostgresDatabase implements Database {
         collection: string,
         fields: Index
     ): Promise<void> {
-        const isUnique = true
-        await this.executeCreateIndex(collection, fields, isUnique)
+        await this.executeCreateIndex(collection, fields, true)
     }
 
     private async executeCreateIndex(
@@ -475,10 +473,6 @@ export default class PostgresDatabase implements Database {
             index,
             isUnique
         )
-
-        if (normalizeIndex(index).filter) {
-            debugger
-        }
 
         try {
             await this.client.query({

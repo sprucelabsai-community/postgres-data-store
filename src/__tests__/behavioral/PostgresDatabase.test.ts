@@ -30,17 +30,19 @@ export default class PostgresDatabaseTest extends AbstractSpruceTest {
         })
     }
 
-    @test.only()
+    @test()
     protected static async runsSuiteOfDatabaseTests() {
         await databaseAssertUtil.runSuite(postgresConnect, [
-            'assertCanSyncUniqueIndexesWithFilterExpression',
+            '!assertCanSyncUniqueIndexesWithFilterExpression',
         ])
     }
 
     @test()
     protected static async runsSuiteOfDatabaseTestsWithTableNameUser() {
         databaseAssertUtil.collectionName = 'user'
-        await databaseAssertUtil.runSuite(postgresConnect)
+        await databaseAssertUtil.runSuite(postgresConnect, [
+            '!assertCanSyncUniqueIndexesWithFilterExpression',
+        ])
     }
 
     @test()
