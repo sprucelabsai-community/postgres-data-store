@@ -1,6 +1,6 @@
 {
   "name": "@sprucelabs/postgres-data-store",
-  "version": "6.1.349",
+  "version": "6.1.350",
   "description": "Postgres production and test adapters for @sprucelabs/data-stores",
   "skill": {
     "namespace": "postgres-data-store",
