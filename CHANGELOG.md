@@ -1,3 +1,5 @@
+## [6.1.466](https://github.com/sprucelabsai-community/postgres-data-store/compare/v6.1.465...v6.1.466) (2024-10-21)
+
 ## [6.1.465](https://github.com/sprucelabsai-community/postgres-data-store/compare/v6.1.464...v6.1.465) (2024-10-20)
 
 ## [6.1.464](https://github.com/sprucelabsai-community/postgres-data-store/compare/v6.1.463...v6.1.464) (2024-10-20)
