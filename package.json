@@ -60,7 +60,7 @@
     "@sprucelabs/semantic-release": "^5.0.2",
     "@sprucelabs/test": "^9.0.57",
     "@sprucelabs/test-utils": "^5.1.494",
-    "@types/node": "^22.8.6",
+    "@types/node": "^22.8.7",
     "@types/pg": "^8.11.10",
     "chokidar-cli": "^3.0.0",
     "eslint": "^9.14.0",
