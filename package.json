@@ -49,7 +49,7 @@
     "watch.tsc": "tsc -w"
   },
   "dependencies": {
-    "@sprucelabs/data-stores": "^28.3.254",
+    "@sprucelabs/data-stores": "^28.3.258",
     "@sprucelabs/schema": "^30.0.590",
     "pg": "^8.13.1"
   },
@@ -63,7 +63,7 @@
     "@types/node": "^22.10.2",
     "@types/pg": "^8.11.10",
     "chokidar-cli": "^3.0.0",
-    "eslint": "^9.16.0",
+    "eslint": "^9.17.0",
     "eslint-config-spruce": "^11.2.26",
     "jest": "^29.7.0",
     "jest-circus": "^29.7.0",
