@@ -70,7 +70,7 @@
     "prettier": "^3.4.2",
     "ts-node": "^10.9.2",
     "tsc-watch": "^6.2.1",
-    "typescript": "^5.7.2"
+    "typescript": "^5.7.3"
   },
   "jest": {
     "testRunner": "jest-circus/runner",
