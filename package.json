@@ -49,18 +49,18 @@
     "watch.tsc": "tsc -w"
   },
   "dependencies": {
-    "@sprucelabs/data-stores": "^28.5.48",
-    "@sprucelabs/schema": "^31.0.36",
+    "@sprucelabs/data-stores": "^28.5.49",
+    "@sprucelabs/schema": "^31.0.37",
     "pg": "^8.13.3"
   },
   "devDependencies": {
-    "@sprucelabs/esm-postbuild": "^6.0.545",
-    "@sprucelabs/jest-json-reporter": "^8.0.575",
+    "@sprucelabs/esm-postbuild": "^6.0.546",
+    "@sprucelabs/jest-json-reporter": "^8.0.576",
     "@sprucelabs/resolve-path-aliases": "^2.0.530",
     "@sprucelabs/semantic-release": "^5.0.2",
     "@sprucelabs/test": "^9.0.70",
-    "@sprucelabs/test-utils": "^5.2.8",
-    "@types/node": "^22.13.1",
+    "@sprucelabs/test-utils": "^5.2.9",
+    "@types/node": "^22.13.2",
     "@types/pg": "^8.11.11",
     "chokidar-cli": "^3.0.0",
     "eslint": "^9.20.1",
