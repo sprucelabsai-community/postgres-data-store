@@ -51,7 +51,7 @@
   "dependencies": {
     "@sprucelabs/data-stores": "^28.5.79",
     "@sprucelabs/schema": "^31.0.63",
-    "pg": "^8.13.3"
+    "pg": "^8.14.0"
   },
   "devDependencies": {
     "@sprucelabs/esm-postbuild": "^6.0.553",
