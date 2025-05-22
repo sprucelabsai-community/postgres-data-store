@@ -49,8 +49,8 @@
     "watch.tsc": "tsc -w"
   },
   "dependencies": {
-    "@sprucelabs/data-stores": "^28.5.113",
-    "@sprucelabs/schema": "^31.0.91",
+    "@sprucelabs/data-stores": "^28.5.114",
+    "@sprucelabs/schema": "^31.0.92",
     "pg": "^8.16.0"
   },
   "devDependencies": {
@@ -59,7 +59,7 @@
     "@sprucelabs/resolve-path-aliases": "^2.0.542",
     "@sprucelabs/semantic-release": "^5.0.2",
     "@sprucelabs/test": "^9.0.81",
-    "@sprucelabs/test-utils": "^5.5.49",
+    "@sprucelabs/test-utils": "^5.5.50",
     "@types/node": "^22.15.21",
     "@types/pg": "^8.15.2",
     "chokidar-cli": "^3.0.0",
