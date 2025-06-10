@@ -1,3 +1,10 @@
+# [7.0.0](https://github.com/sprucelabsai-community/postgres-data-store/compare/v6.1.687...v7.0.0) (2025-06-10)
+
+
+### Breaking Changes
+
+* jest upgrade ([02c1576](https://github.com/sprucelabsai-community/postgres-data-store/commit/02c1576))
+
 ## [6.1.687](https://github.com/sprucelabsai-community/postgres-data-store/compare/v6.1.686...v6.1.687) (2025-06-06)
 
 ## [6.1.686](https://github.com/sprucelabsai-community/postgres-data-store/compare/v6.1.685...v6.1.686) (2025-06-06)
