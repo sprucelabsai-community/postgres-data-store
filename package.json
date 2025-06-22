@@ -50,7 +50,7 @@
     "build": "yarn run build.tsc --sourceMap ; yarn run resolve-paths"
   },
   "dependencies": {
-    "@sprucelabs/data-stores": "^29.0.20",
+    "@sprucelabs/data-stores": "^29.0.21",
     "@sprucelabs/schema": "^32.0.19",
     "pg": "^8.16.2"
   },
