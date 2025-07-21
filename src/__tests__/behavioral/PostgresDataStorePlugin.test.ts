@@ -1,7 +1,7 @@
 import {
     DataStorePlugin,
     DataStorePluginWillCreateOneResponse,
-    DataStorePluginWillUpdateOneResponse,
+    DataStorePluginWillUpdateResponse,
 } from '@sprucelabs/data-stores'
 import { Schema, assertOptions, buildSchema } from '@sprucelabs/schema'
 import { test, assert, errorAssert } from '@sprucelabs/test-utils'
@@ -66,10 +66,10 @@ class PostgresDataStorePlugin implements DataStorePlugin {
         }
     }
 
-    public async willUpdateOne(
+    public async willUpdate(
         _query: Record<string, any>,
         updates: Record<string, any>
-    ): Promise<DataStorePluginWillUpdateOneResponse> {
+    ): Promise<DataStorePluginWillUpdateResponse> {
         return {
             newUpdates: {
                 ...updates,
