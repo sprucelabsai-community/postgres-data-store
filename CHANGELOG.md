@@ -1,3 +1,10 @@
+# [9.0.0](https://github.com/sprucelabsai-community/postgres-data-store/compare/v8.0.1...v9.0.0) (2025-07-25)
+
+
+### Breaking Changes
+
+* upgrade ([e7fb91c](https://github.com/sprucelabsai-community/postgres-data-store/commit/e7fb91c))
+
 ## [8.0.1](https://github.com/sprucelabsai-community/postgres-data-store/compare/v8.0.0...v8.0.1) (2025-07-21)
 
 # [8.0.0](https://github.com/sprucelabsai-community/postgres-data-store/compare/v7.0.45...v8.0.0) (2025-07-21)
