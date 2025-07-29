@@ -61,7 +61,7 @@
     "@sprucelabs/test": "^10.0.12",
     "@sprucelabs/test-utils": "^6.0.42",
     "@types/node": "^24.1.0",
-    "@types/pg": "^8.15.4",
+    "@types/pg": "^8.15.5",
     "chokidar-cli": "^3.0.0",
     "eslint": "^9.32.0",
     "eslint-config-spruce": "^11.2.26",
