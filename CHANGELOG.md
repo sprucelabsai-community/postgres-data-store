@@ -1,3 +1,10 @@
+# [9.1.0](https://github.com/sprucelabsai-community/postgres-data-store/compare/v9.0.7...v9.1.0) (2025-07-31)
+
+
+### Features
+
+* upgrade ([6dd8c9b](https://github.com/sprucelabsai-community/postgres-data-store/commit/6dd8c9b))
+
 ## [9.0.7](https://github.com/sprucelabsai-community/postgres-data-store/compare/v9.0.6...v9.0.7) (2025-07-30)
 
 ## [9.0.6](https://github.com/sprucelabsai-community/postgres-data-store/compare/v9.0.5...v9.0.6) (2025-07-29)
