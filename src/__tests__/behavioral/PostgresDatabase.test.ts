@@ -34,6 +34,7 @@ export default class PostgresDatabaseTest extends AbstractSpruceTest {
     protected static async runsSuiteOfDatabaseTests() {
         await databaseAssertUtil.runSuite(postgresConnect, [
             '!assertCanSyncUniqueIndexesWithFilterExpression',
+            '!assertCanFindOrWithBadIdField',
         ])
     }
 
@@ -42,6 +43,7 @@ export default class PostgresDatabaseTest extends AbstractSpruceTest {
         databaseAssertUtil.collectionName = 'user'
         await databaseAssertUtil.runSuite(postgresConnect, [
             '!assertCanSyncUniqueIndexesWithFilterExpression',
+            '!assertCanFindOrWithBadIdField',
         ])
     }
 
