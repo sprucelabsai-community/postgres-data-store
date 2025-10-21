@@ -1,3 +1,5 @@
+## [9.1.96](https://github.com/sprucelabsai-community/postgres-data-store/compare/v9.1.95...v9.1.96) (2025-10-21)
+
 ## [9.1.95](https://github.com/sprucelabsai-community/postgres-data-store/compare/v9.1.94...v9.1.95) (2025-10-21)
 
 ## [9.1.94](https://github.com/sprucelabsai-community/postgres-data-store/compare/v9.1.93...v9.1.94) (2025-10-20)
