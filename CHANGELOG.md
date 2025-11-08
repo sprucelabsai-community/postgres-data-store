@@ -1,3 +1,8 @@
+## <small>9.1.107 (2025-11-08)</small>
+
+* chore(auto-upgrade): Upgrade Tests Passed [auto-merge] ([5b9adfe](https://github.com/sprucelabsai-community/postgres-data-store/commit/5b9adfe))
+* chore(auto-upgrade): upgraded packages [upgrade-all] ([dddb271](https://github.com/sprucelabsai-community/postgres-data-store/commit/dddb271))
+
 ## [9.1.106](https://github.com/sprucelabsai-community/postgres-data-store/compare/v9.1.105...v9.1.106) (2025-11-08)
 
 ## [9.1.105](https://github.com/sprucelabsai-community/postgres-data-store/compare/v9.1.104...v9.1.105) (2025-10-31)
