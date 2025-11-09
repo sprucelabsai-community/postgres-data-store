@@ -1,3 +1,8 @@
+## <small>10.0.1 (2025-11-09)</small>
+
+* chore(auto-upgrade): Upgrade Tests Passed [auto-merge] ([ecac124](https://github.com/sprucelabsai-community/postgres-data-store/commit/ecac124))
+* chore(auto-upgrade): upgraded packages [upgrade-all] ([7805743](https://github.com/sprucelabsai-community/postgres-data-store/commit/7805743))
+
 ## 10.0.0 (2025-11-09)
 
 * major: upgrade ([e41b6d6](https://github.com/sprucelabsai-community/postgres-data-store/commit/e41b6d6))
