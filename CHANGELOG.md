@@ -1,3 +1,7 @@
+## <small>10.0.10 (2025-11-14)</small>
+
+* patch: upgrade ([27148e0](https://github.com/sprucelabsai-community/postgres-data-store/commit/27148e0))
+
 ## <small>10.0.9 (2025-11-13)</small>
 
 * chore(auto-upgrade): Upgrade Tests Passed [auto-merge] ([a1e8c32](https://github.com/sprucelabsai-community/postgres-data-store/commit/a1e8c32))
