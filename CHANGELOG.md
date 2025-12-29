@@ -1,3 +1,8 @@
+## <small>10.0.29 (2025-12-29)</small>
+
+* chore(auto-upgrade): Upgrade Tests Passed [auto-merge] ([932ee14](https://github.com/sprucelabsai-community/postgres-data-store/commit/932ee14))
+* chore(auto-upgrade): upgraded packages [upgrade-all] ([d48aeac](https://github.com/sprucelabsai-community/postgres-data-store/commit/d48aeac))
+
 ## <small>10.0.28 (2025-12-27)</small>
 
 * chore(auto-upgrade): Upgrade Tests Passed [auto-merge] ([e872fd3](https://github.com/sprucelabsai-community/postgres-data-store/commit/e872fd3))
