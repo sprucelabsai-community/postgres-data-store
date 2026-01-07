@@ -1,3 +1,7 @@
+## 10.1.0 (2026-01-07)
+
+* feat: add exports field for proper ESM support in Node.js ([2c99c49](https://github.com/sprucelabsai-community/postgres-data-store/commit/2c99c49))
+
 ## <small>10.0.32 (2026-01-07)</small>
 
 * chore(auto-upgrade): Upgrade Tests Passed [auto-merge] ([bb61640](https://github.com/sprucelabsai-community/postgres-data-store/commit/bb61640))
