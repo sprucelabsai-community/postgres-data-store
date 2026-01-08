@@ -1,3 +1,7 @@
+## 11.0.0 (2026-01-08)
+
+* major: upgrade dependencies ([ba3ab7a](https://github.com/sprucelabsai-community/postgres-data-store/commit/ba3ab7a))
+
 ## <small>10.1.1 (2026-01-07)</small>
 
 * chore(auto-upgrade): Upgrade Tests Passed [auto-merge] ([f47b1b3](https://github.com/sprucelabsai-community/postgres-data-store/commit/f47b1b3))
