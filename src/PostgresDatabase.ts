@@ -393,7 +393,7 @@ export default class PostgresDatabase implements Database {
             await this.client.query({
                 text: query,
             })
-        } catch (err: any) {
+        } catch {
             throw new DataStoresError({
                 code: 'INDEX_NOT_FOUND',
                 missingIndex: normalizeIndex(index).fields,
