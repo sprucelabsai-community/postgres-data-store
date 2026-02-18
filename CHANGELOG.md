@@ -1,3 +1,7 @@
+## <small>11.0.4 (2026-02-18)</small>
+
+* patch: upgrade dependencies and fix lint errors ([569abb7](https://github.com/sprucelabsai-community/postgres-data-store/commit/569abb7))
+
 ## <small>11.0.3 (2026-01-27)</small>
 
 * chore(auto-upgrade): Upgrade Tests Passed [auto-merge] ([8971962](https://github.com/sprucelabsai-community/postgres-data-store/commit/8971962))
