@@ -1,3 +1,7 @@
+## <small>11.0.20 (2026-04-09)</small>
+
+* chore: add rootDir and types to tsconfig for TypeScript 6 compatibility ([c2a6d93](https://github.com/sprucelabsai-community/postgres-data-store/commit/c2a6d93))
+
 ## <small>11.0.19 (2026-03-13)</small>
 
 * chore(auto-upgrade): Upgrade Tests Passed [auto-merge] ([a677a0f](https://github.com/sprucelabsai-community/postgres-data-store/commit/a677a0f))
